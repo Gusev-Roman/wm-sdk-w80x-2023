@@ -21,8 +21,8 @@
  * @retval     the read data
  */
 u8 AT24CXX_ReadOneByte(u16 addr)
-{				  
-	u8 temp=0;		  	    																 
+{
+	u8 temp=0;
 	//printf("\nread addr=%x\n",ReadAddr);
 	tls_i2c_write_byte(0xA0,1);   
 	tls_i2c_wait_ack(); 
@@ -44,7 +44,7 @@ u8 AT24CXX_ReadOneByte(u16 addr)
  * @retval    null
  */
 void AT24CXX_ReadLenByte(u16 addr,u8 *buf,u16 len)
-{				  
+{
 	//printf("\nread len addr=%x\n",ReadAddr);
 	tls_i2c_write_byte(0xA0,1);   
 	tls_i2c_wait_ack(); 
@@ -67,41 +67,42 @@ void AT24CXX_ReadLenByte(u16 addr,u8 *buf,u16 len)
  * @retval     null
  */
 void AT24CXX_WriteOneByte(u16 addr, u8 data)
-{				   	  	    																 
-	tls_i2c_write_byte(0XA0, 1); 
-	tls_i2c_wait_ack();	   
+{
+	tls_i2c_write_byte(0XA0, 1);
+	tls_i2c_wait_ack();
 	tls_i2c_write_byte(addr, 0);
-	tls_i2c_wait_ack(); 	 										  		   
-	tls_i2c_write_byte(data, 0); 				   
-	tls_i2c_wait_ack();  	   
+	tls_i2c_wait_ack();
+	tls_i2c_write_byte(data, 0);
+	tls_i2c_wait_ack();
  	tls_i2c_stop();
 	tls_os_time_delay(1);
 }
 
 /**
  * @brief	check the eeprom is normal or not
- * @retval 
+ * @retval
  *     0---success
  *     1---failed
- * @note 
+ * @note
  *	different 24Cxx chip will use the different addr
  */
 u8 AT24CXX_Check(void)
 {
 	u8 temp;
 	temp=AT24CXX_ReadOneByte(255);
-	if (temp==0x55)return 0;		   
+	if (temp==0x55)return 0;
 	else
 	{
 		AT24CXX_WriteOneByte(255, 0x55);
 		tls_os_time_delay(1);
-		temp=AT24CXX_ReadOneByte(255);	  
+		temp=AT24CXX_ReadOneByte(255);
 		if (temp==0x55)return 0;
 	}
 
-	return 1;											  
+	return 1;
 }
-
+
+
 /**
  * @brief	read multibytes from the specified address of the eeprom
  * @param[in] addr the eeprom address will be read from
@@ -113,10 +114,10 @@ void AT24CXX_Read(u16 addr, u8 *buf, u16 len)
 {
 	while(len)
 	{
-		*buf++=AT24CXX_ReadOneByte(addr++);	
+		*buf++=AT24CXX_ReadOneByte(addr++);
 		len--;
 	}
-}  
+}
 
 /**
  * @brief	write multibytes from the specified address of the eeprom
@@ -133,7 +134,7 @@ void AT24CXX_Write(u16 addr, u8 *buf, u16 len)
 		addr++;
 		buf++;
 	}
-} 
+}
 
 int i2c_demo(char *buf)
 {
@@ -142,7 +143,7 @@ int i2c_demo(char *buf)
 
     wm_i2c_scl_config(WM_IO_PA_01);
     wm_i2c_sda_config(WM_IO_PA_04);
-    
+
 	tls_i2c_init(I2C_FREQ);
 
 	while(AT24CXX_Check())
@@ -158,7 +159,7 @@ int i2c_demo(char *buf)
 	//AT24CXX_Read(0,datatmp,sizeof(testbuf));
 	AT24CXX_ReadLenByte(0,(u8 *)datatmp,sizeof(testbuf));
 	printf("\nread data is:%s\n",datatmp);
-	
+
 	return WM_SUCCESS;
 }
 
