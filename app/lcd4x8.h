@@ -1,6 +1,7 @@
 // lcd4x8.h
 #pragma once
 #include <stdbool.h>
+#include "wm_type_def.h"
 
 #ifdef __cplusplus
 extern "C" {

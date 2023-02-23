@@ -12,6 +12,7 @@
 * Date : 2014-6-14
 *****************************************************************************/ 
 #include "wm_include.h"
+#include "wm_regs.h"
 #include <stdio.h>
 #include "wm_i2c.h"
 #include "wm_gpio_afsel.h"
@@ -22,18 +23,57 @@
 #include "bmp280lib.h"
 #include "wm_timer.h"
 #include "utimer.h"
+#include "wm_lcd.h"
+#include "wm_pmu.h"
+#include "lcd4x8.h"
 
 #define I2C_FREQ		(200000)
+
+void lcd_init_4x8(){
+	tls_lcd_options_t lcd_opts = {
+	    true,
+	    BIAS_ONETHIRD,
+	    DUTY_ONEFOURTH,
+	    VLCD33,
+	    4,
+	    60,
+	};
+	/* COM 0-3 */
+	tls_io_cfg_set(WM_IO_PB_25, WM_IO_OPTION6);
+	tls_io_cfg_set(WM_IO_PB_21, WM_IO_OPTION6);
+	tls_io_cfg_set(WM_IO_PB_22, WM_IO_OPTION6);
+	tls_io_cfg_set(WM_IO_PB_27, WM_IO_OPTION6);
+
+	/* SEG 0-7 */
+	tls_io_cfg_set(WM_IO_PB_23, WM_IO_OPTION6);
+	tls_io_cfg_set(WM_IO_PB_26, WM_IO_OPTION6);
+	tls_io_cfg_set(WM_IO_PB_24, WM_IO_OPTION6);
+	tls_io_cfg_set(WM_IO_PA_07, WM_IO_OPTION6);
+	tls_io_cfg_set(WM_IO_PA_08, WM_IO_OPTION6);
+	tls_io_cfg_set(WM_IO_PA_09, WM_IO_OPTION6);
+	tls_io_cfg_set(WM_IO_PA_10, WM_IO_OPTION6);
+	tls_io_cfg_set(WM_IO_PA_11, WM_IO_OPTION6);
+
+	tls_open_peripheral_clock(TLS_PERIPHERAL_TYPE_LCD);
+
+	/*enable output valid*/
+	tls_reg_write32(HR_LCD_COM_EN, 0xF);	// 4 COMs
+	tls_reg_write32(HR_LCD_SEG_EN, 0xFF);	// 8 segs
+
+	tls_lcd_init(&lcd_opts);
+}
 
 void UserMain(void)
 {
 	tls_sys_clk clk;
+	char bufx[10];
 	
 	printf("BMP280 reader\n");
 	TickType_t tc = xTaskGetTickCount();
 	printf("ticks:%08X\n", tc);
 	wm_i2c_scl_config(WM_IO_PA_01);
 
+	/*
 	tls_gpio_cfg(WM_IO_PB_16, WM_GPIO_DIR_OUTPUT, WM_GPIO_ATTR_FLOATING);
 	tls_gpio_cfg(WM_IO_PB_17, WM_GPIO_DIR_OUTPUT, WM_GPIO_ATTR_FLOATING);
 	tls_gpio_cfg(WM_IO_PB_18, WM_GPIO_DIR_OUTPUT, WM_GPIO_ATTR_FLOATING);
@@ -41,8 +81,10 @@ void UserMain(void)
 	tls_gpio_write(WM_IO_PB_16, 0);	// LEDs
 	tls_gpio_write(WM_IO_PB_17, 1);	
 	tls_gpio_write(WM_IO_PB_18, 0);	
+	 */
 	
 	wm_i2c_sda_config(WM_IO_PA_04);
+	lcd_init_4x8();
 	
 	tls_sys_clk_set(4);		// 480/4 = 120M
 	tls_sys_clk_get(&clk);
@@ -105,6 +147,12 @@ void UserMain(void)
         int32_t pressure = bmp280_convert_pressure(raw_pressure, raw_temperature, &params);
         printf("Pressure = %.3f kPa\n", pressure / 1000.f);
         printf("Temp. = %.2f C\n", temperature / 100.f);
+		sprintf(bufx, "%d", pressure);
+		clean_pos(0);
+		clean_pos(1);
+		clean_pos(2);
+		clean_pos(3);
+		lcd_show_tail(bufx);	// out to LCD display!
         // poll every 500ms
         tls_os_time_delay(250);
     }
