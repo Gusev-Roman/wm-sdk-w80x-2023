@@ -20,6 +20,8 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "bmp280lib.h"
+#include "wm_timer.h"
+#include "utimer.h"
 
 #define I2C_FREQ		(200000)
 
@@ -67,7 +69,12 @@ void UserMain(void)
 	}
     
 	bmp280_reset();
+	
+	utimer_init();
 	tls_os_time_delay(25);	// wait for reset
+	
+	
+	printf("micros() gives %x\n", tls_reg_read32(HR_TIMER0_PRD));
     // 500ms sampling time, x16 filter
     const uint8_t reg_config_val = ((0x04 << 5) | (0x05 << 2)) & 0xFC;
     // send register number followed by its corresponding value
@@ -88,7 +95,8 @@ void UserMain(void)
     tls_os_time_delay(125); // sleep so that data polling and register update don't collide
     
     while (1) {
-		printf("ticks:%08X\n", xTaskGetTickCount());
+		//printf("ticks:%08X\n", xTaskGetTickCount());
+		printf("micros() gives %x, millis() gives %X\n", micros(), millis());
         bmp280_read_raw(&raw_temperature, &raw_pressure);
 
 		//printf("raw T=%d\n", raw_temperature);
