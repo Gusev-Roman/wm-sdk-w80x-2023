@@ -13,7 +13,7 @@ extern "C" {
 #define LCD_ALIGN_RIGHT 1
 #define LCD_ALIGN_LEFT 0
 	
-	const char* _printables;
+	static char _printables[];
 	uint8_t _lcd_align;
 
 	int show_sym_by_bitmap(uint8_t bitmap, uint8_t pos);	// pos is zero-based

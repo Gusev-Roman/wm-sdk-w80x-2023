@@ -69,6 +69,7 @@ void UserMain(void)
 	char bufx[10];
 	
 	printf("BMP280 reader\n");
+	is_printable('0');
 	TickType_t tc = xTaskGetTickCount();
 	printf("ticks:%08X\n", tc);
 	wm_i2c_scl_config(WM_IO_PA_01);
