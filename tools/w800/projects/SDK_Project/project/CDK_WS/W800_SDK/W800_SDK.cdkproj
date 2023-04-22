@@ -2576,6 +2576,24 @@
     <File Name="../../../../../../../app/lcd4x8.h">
       <FileOption/>
     </File>
+    <File Name="../../../../../../../app/i2c_lib.c">
+      <FileOption/>
+    </File>
+    <File Name="../../../../../../../app/i2c_lib.h">
+      <FileOption/>
+    </File>
+    <File Name="../../../../../../../app/bmp280lib.c">
+      <FileOption/>
+    </File>
+    <File Name="../../../../../../../app/bmp280lib.h">
+      <FileOption/>
+    </File>
+    <File Name="../../../../../../../app/utimer.c">
+      <FileOption/>
+    </File>
+    <File Name="../../../../../../../app/utimer.h">
+      <FileOption/>
+    </File>
   </VirtualDirectory>
   <VirtualDirectory Name="platform">
     <VirtualDirectory Name="arch">
@@ -3233,16 +3251,6 @@
   <VendorInfo>
     <VendorName>NULL</VendorName>
   </VendorInfo>
-  <DebugSessions>
-    <watchExpressions/>
-    <memoryExpressions/>
-    <statistics/>
-    <peripheralTabs/>
-    <WatchDisplayFormat/>
-    <LocalDisplayFormat/>
-    <debugLayout/>
-    <memoryTabColSizeExpressions/>
-  </DebugSessions>
   <ToolsConfig>
     <Compiler>
       <Name>CKV2ElfMinilib</Name>
@@ -3250,7 +3258,8 @@
     </Compiler>
   </ToolsConfig>
   <MonitorProgress>
-    <FlashOperate>25</FlashOperate>
+    <FlashOperate>179</FlashOperate>
+    <DebugLaunch>53</DebugLaunch>
   </MonitorProgress>
   <BuildConfigs>
     <BuildConfig Name="BuildSet">
@@ -3386,7 +3395,7 @@
       </Linker>
       <Debug>
         <LoadApplicationAtStartup>yes</LoadApplicationAtStartup>
-        <Connector>ICE</Connector>
+        <Connector>Remote ICE</Connector>
         <StopAt>yes</StopAt>
         <StopAtText>main</StopAtText>
         <InitFile>$(ProjectPath)..\..\..\..\..\..\..\tools\w800\utilities\gdb.init</InitFile>
@@ -3411,10 +3420,10 @@
           <TRST>no</TRST>
           <DebugPrint>no</DebugPrint>
           <Connect>Normal</Connect>
-          <ResetType>soft</ResetType>
+          <ResetType>Hard Reset</ResetType>
           <SoftResetVal>0</SoftResetVal>
-          <RTOSType>None</RTOSType>
-          <DownloadToFlash>no</DownloadToFlash>
+          <RTOSType>Bare Metal</RTOSType>
+          <DownloadToFlash>yes</DownloadToFlash>
           <ResetAfterConnect>yes</ResetAfterConnect>
           <GDBName/>
           <GDBServerType>Local</GDBServerType>
@@ -3427,7 +3436,7 @@
           <SupportRemoteICEAsyncDebug>no</SupportRemoteICEAsyncDebug>
         </ConfigICE>
         <ConfigSIM>
-          <SIMTarget/>
+          <SIMTarget>soccfg/cskyv2/smartl_804_cfg.xml</SIMTarget>
           <OtherFlags/>
           <NoGraphic>yes</NoGraphic>
           <Log>no</Log>
@@ -3449,17 +3458,27 @@
       <Flash>
         <InitFile>$(ProjectPath)..\..\..\..\..\..\..\tools\w800\utilities\flashinit</InitFile>
         <PreInit/>
-        <Erase>Erase Sectors</Erase>
-        <Algorithms Path=""/>
+        <Erase>Erase Full Chip</Erase>
+        <Algorithms Path="">W800_Flash_Tool.elf</Algorithms>
         <Program>yes</Program>
         <Verify>yes</Verify>
-        <ResetAndRun>no</ResetAndRun>
-        <ResetType>Soft Reset</ResetType>
+        <ResetAndRun>yes</ResetAndRun>
+        <ResetType>Hard Reset</ResetType>
         <SoftResetVal/>
-        <External>yes</External>
+        <External>no</External>
         <Command>$(ProjectPath)/../../../../../wm_tool.exe</Command>
         <Arguments> -c COM11 -rs rts -ds 2M -dl $(ProjectPath)/../../../../../../../bin/w800/w800.fls</Arguments>
       </Flash>
     </BuildConfig>
   </BuildConfigs>
+  <DebugSessions>
+    <watchExpressions/>
+    <memoryExpressions/>
+    <statistics/>
+    <peripheralTabs/>
+    <WatchDisplayFormat/>
+    <LocalDisplayFormat/>
+    <debugLayout/>
+    <memoryTabColSizeExpressions/>
+  </DebugSessions>
 </Project>

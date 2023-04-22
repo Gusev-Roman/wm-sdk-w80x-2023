@@ -5,3 +5,4 @@ bin
 tools/w800/wm_getver
 Obj/*
 .cache/*
+tools/w800/projects/SDK_Project/project/CDK_WS/W800_SDK/*
