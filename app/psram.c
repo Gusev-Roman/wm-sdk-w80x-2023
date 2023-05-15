@@ -3,12 +3,14 @@
 */
 
 #include <stdio.h>
+#include <string.h>
+#include "wm_type_def.h"
 #include "psram.h"
 
 void* _first_chunk;
 void* _free_area;
 void* _heap;
-static const size_t _heap_sz = 1024 * 1024 / 8;    // 8 Mb chip used
+static const size_t _heap_sz = 1024 * 1024 / 2;    // 8 Mb chip used (in 16-b chunks)
 size_t _free_sz;
 
 MCB* _last_chunk;
@@ -27,7 +29,7 @@ bool isHeap(void *mem) {
 // TODO: make Z-record with full memory alloc'd
 void init_heap() {
     MCB* zfree;
-    _heap = 0x30000000;
+    _heap = (void *)0x30000000;
     if (!_heap) {
         puts("init_heap error: not enough memory!");
         return;
