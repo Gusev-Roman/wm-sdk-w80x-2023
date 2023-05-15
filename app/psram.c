@@ -2,13 +2,15 @@
     psram.c - alloc, realloc, free for PSRAM
 */
 
+#include <stdio.h>
+#include "psram.h"
+
 void* _first_chunk;
 void* _free_area;
 void* _heap;
 static const size_t _heap_sz = 1024 * 1024 / 8;    // 8 Mb chip used
 size_t _free_sz;
 
-#pragma pack(1)
 MCB* _last_chunk;
 
 /**
@@ -25,7 +27,7 @@ bool isHeap(void *mem) {
 // TODO: make Z-record with full memory alloc'd
 void init_heap() {
     MCB* zfree;
-    _heap = malloc(_heap_sz * 16);      // этого не должно быть на МК!
+    _heap = 0x30000000;
     if (!_heap) {
         puts("init_heap error: not enough memory!");
         return;
