@@ -1,0 +1,15 @@
+   const char *wf;
+
+    wf = "3.14159265";
+    printf("[%s] lcd_strlen() == 0x%x\n", wf, lcd_strlen(wf)); // oversize
+    lcd_show_str(wf);
+    wf = "0.5";
+    printf("[%s] lcd_strlen() == 0x%x\n", wf, lcd_strlen(wf)); // right align need
+    wf = "-3.5";
+    printf("[%s] lcd_strlen() == 0x%x\n", wf, lcd_strlen(wf));  // right align, dot pos
+    lcd_show_str(wf);
+    wf = "..!..";
+    printf("[%s] lcd_strlen() == 0x%x\n", wf, lcd_strlen(wf));  // 0 printable chars
+    wf = "99%";
+    printf("[%s] lcd_strlen() == 0x%x\n", wf, lcd_strlen(wf));  // right align, no dots
+    

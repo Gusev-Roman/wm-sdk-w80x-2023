@@ -201,12 +201,12 @@ int demo_cmd_execute(Demo_Console *sys)
 
     for(i = 0; ; i++)
     {
-    	strfirst = (u8 *)strstr((char *)sys->rx_buf, console_tbl[i].cmd);	
+    	strfirst = (u8 *)strstr((char *)sys->rx_buf, console_tbl[i].cmd);
         if (strfirst != NULL)
         {
 			/*remove \r\n from input string*/
 			str_r = (u8 *)strchr((char *)strfirst, '\r');
-			str_n = (u8 *)strchr((char *)strfirst, '\n');			
+			str_n = (u8 *)strchr((char *)strfirst, '\n');
 			if (str_r&&(str_n == NULL))
 			{
 				if (str_r > strfirst)

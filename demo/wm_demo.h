@@ -5,7 +5,9 @@
 #define DEMO_OFF	0
 
 //demo console
-#define DEMO_CONSOLE				DEMO_ON
+#ifndef DEMO_CONSOLE
+#define DEMO_CONSOLE                DEMO_OFF
+#endif
 
 //socket demo
 #define DEMO_STD_SOCKET_CLIENT	    (DEMO_OFF && DEMO_CONSOLE)
@@ -40,7 +42,7 @@
 #define DEMO_MASTER_SPI				(DEMO_OFF && DEMO_CONSOLE)
 
 //Encryption&Decryption demo
-#define DEMO_ENCRYPT				(DEMO_OFF && DEMO_CONSOLE)
+#define DEMO_ENCRYPT				(DEMO_ON && DEMO_CONSOLE)
 
 //rsa demo
 #define DEMO_RSA					(DEMO_OFF && DEMO_CONSOLE)
@@ -52,7 +54,7 @@
 #define DEMO_TIMER					(DEMO_OFF && DEMO_CONSOLE)
 
 //i2c demo
-#define DEMO_I2C					(DEMO_OFF && DEMO_CONSOLE)
+#define DEMO_I2C					(DEMO_ON && DEMO_CONSOLE)
 
 //pwm demo
 #define DEMO_PWM					(DEMO_OFF && DEMO_CONSOLE)
@@ -61,7 +63,7 @@
 #define DEMO_PMU					(DEMO_OFF && DEMO_CONSOLE)
 
 //ntp demo
-#define DEMO_NTP					(DEMO_ON && DEMO_CONSOLE)
+#define DEMO_NTP					(DEMO_OFF && DEMO_CONSOLE)
 
 //i2s demo
 #define DEMO_I2S					(DEMO_OFF && DEMO_CONSOLE)
@@ -79,7 +81,7 @@
 #define DEMO_TOUCHSENSOR           (DEMO_OFF && DEMO_CONSOLE)
 
 //LCD
-#define DEMO_LCD                    (DEMO_OFF && DEMO_CONSOLE)
+#define DEMO_LCD                    (DEMO_ON && DEMO_CONSOLE)
 
 
 //ssl server demo
@@ -100,7 +102,7 @@
 
 #define DEMO_DSP					(DEMO_ON && DEMO_CONSOLE)
 
-#define DEMO_BT                     (DEMO_ON && DEMO_CONSOLE)
+#define DEMO_BT                     DEMO_OFF //(DEMO_ON && DEMO_CONSOLE)
 
 #define DEMO_AVOID_COPY             (DEMO_OFF && DEMO_CONSOLE)
 

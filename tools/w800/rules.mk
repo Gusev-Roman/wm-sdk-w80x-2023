@@ -137,6 +137,7 @@ help:
 	@echo  '  list       - List locally available serial ports'
 	@echo  '  run        - Flash the firmware to the device after compilation'
 	@echo  '               and capture the log output by the device'
+	@echo  '  mon        - monitor USB port ttyUSB0 output at 115200 baud using miniterm'
 
 lib: .subdirs $(OBJS) $(OLIBS)
 ifeq ($(USE_NIMBLE), 1)
@@ -145,7 +146,7 @@ ifeq ($(USE_NIMBLE), 1)
 else
 	@cp $(LIBODIR)/libapp_br_edr$(LIB_EXT) $(TOP_DIR)/lib/$(CONFIG_ARCH_TYPE)
 	@cp $(LIBODIR)/libbthost_br_edr$(LIB_EXT) $(TOP_DIR)/lib/$(CONFIG_ARCH_TYPE)
-endif	
+endif
 	@cp $(LIBODIR)/libwmarch$(LIB_EXT) $(TOP_DIR)/lib/$(CONFIG_ARCH_TYPE)
 	@cp $(LIBODIR)/libwmcommon$(LIB_EXT) $(TOP_DIR)/lib/$(CONFIG_ARCH_TYPE)
 	@cp $(LIBODIR)/libdrivers$(LIB_EXT) $(TOP_DIR)/lib/$(CONFIG_ARCH_TYPE)
@@ -166,23 +167,25 @@ distclean:clean
 	$(RM) -r $(SDK_TOOLS)/.config.old
 
 run:all
-	@$(WM_TOOL) -c $(DL_PORT) -rs at -ds $(DL_BAUD) -dl $(FIRMWAREDIR)/$(TARGET)/$(TARGET).fls -sl str -ws 115200
+	@$(WM_TOOL) -c $(DL_PORT) -rs rts -ds $(DL_BAUD) -dl $(FIRMWAREDIR)/$(TARGET)/$(TARGET).fls -sl str -ws 115200
 
 list:
 	@$(WM_TOOL) -l
 
 down:
-	@$(WM_TOOL) -c $(DL_PORT) -rs at -ds $(DL_BAUD) -dl $(FIRMWAREDIR)/$(TARGET)/$(TARGET).fls
+	@$(WM_TOOL) -c $(DL_PORT) -rs rts -ds $(DL_BAUD) -dl $(FIRMWAREDIR)/$(TARGET)/$(TARGET).fls
 
 image:all
-	@$(WM_TOOL) -c $(DL_PORT) -rs at -ds $(DL_BAUD) -dl $(FIRMWAREDIR)/$(TARGET)/$(TARGET).img
+	@$(WM_TOOL) -c $(DL_PORT) -rs rts -ds $(DL_BAUD) -dl $(FIRMWAREDIR)/$(TARGET)/$(TARGET).img
 
 flash:all
-	@$(WM_TOOL) -c $(DL_PORT) -rs at -ds $(DL_BAUD) -dl $(FIRMWAREDIR)/$(TARGET)/$(TARGET).fls
+	@$(WM_TOOL) -c $(DL_PORT) -rs rts -ds $(DL_BAUD) -dl $(FIRMWAREDIR)/$(TARGET)/$(TARGET).fls
 
 erase:
-	@$(WM_TOOL) -c $(DL_PORT) -rs at -eo all
+	@$(WM_TOOL) -c $(DL_PORT) -rs rts -eo all
 
+mon:
+	miniterm -e --rts 0 /dev/$(DL_PORT) 115200
 .subdirs:
 	@set -e; $(foreach d, $(SUBDIRS), $(MAKE) -C $(d);)
 
