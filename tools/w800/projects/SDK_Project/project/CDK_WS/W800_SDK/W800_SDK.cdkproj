@@ -3227,6 +3227,25 @@
   <VendorInfo>
     <VendorName>NULL</VendorName>
   </VendorInfo>
+  <DebugSessions>
+    <watchExpressions/>
+    <memoryExpressions/>
+    <statistics/>
+    <peripheralTabs/>
+    <WatchDisplayFormat/>
+    <LocalDisplayFormat/>
+    <debugLayout/>
+    <memoryTabColSizeExpressions/>
+  </DebugSessions>
+  <ToolsConfig>
+    <Compiler>
+      <Name>CKV2ElfMinilib</Name>
+      <Version>latest</Version>
+    </Compiler>
+  </ToolsConfig>
+  <MonitorProgress>
+    <FlashOperate>25</FlashOperate>
+  </MonitorProgress>
   <BuildConfigs>
     <BuildConfig Name="BuildSet">
       <Target>
@@ -3320,9 +3339,10 @@
           <RunUserProg>yes</RunUserProg>
           <UserProgName>../../../../../../../tools/w800/utilities/cdk_aft_build.sh;../../../../../../../tools/w800/utilities/aft_build_project.sh</UserProgName>
         </AfterMake>
+        <Tools/>
       </User>
       <Compiler>
-        <Define>GCC_COMPILE=1;TLS_CONFIG_CPU_XT804=1;NIMBLE_FTR=1;NO_PERSISTENCE=1;USE_SELECT=1;HIGH_PERFORMANCE=1;USE_MBEDTLS=1</Define>
+        <Define>GCC_COMPILE=1;TLS_CONFIG_CPU_XT804=1;NIMBLE_FTR=1;NO_PERSISTENCE=1;USE_SELECT=1;HIGH_PERFORMANCE=1;USE_MBEDTLS=1;DEMO_CONSOLE=1</Define>
         <Undefine/>
         <Optim>Optimize more (-O2)</Optim>
         <DebugLevel>Maximum (-g3)</DebugLevel>
@@ -3356,6 +3376,7 @@
         <OtherFlags>-Wl,-zmax-page-size=1024 -mhard-float</OtherFlags>
         <AutoLDFile>no</AutoLDFile>
         <LinkType/>
+        <IncludeAllLibs>no</IncludeAllLibs>
       </Linker>
       <Debug>
         <LoadApplicationAtStartup>yes</LoadApplicationAtStartup>
@@ -3363,6 +3384,7 @@
         <StopAt>yes</StopAt>
         <StopAtText>main</StopAtText>
         <InitFile>$(ProjectPath)..\..\..\..\..\..\..\tools\w800\utilities\gdb.init</InitFile>
+        <PreInit/>
         <AfterLoadFile/>
         <AutoRun>yes</AutoRun>
         <ResetType>Hard Reset</ResetType>
@@ -3377,6 +3399,7 @@
           <CPUNumber>0</CPUNumber>
           <Clock>12000</Clock>
           <Delay>10</Delay>
+          <NResetDelay>100</NResetDelay>
           <WaitReset>50</WaitReset>
           <DDC>yes</DDC>
           <TRST>no</TRST>
@@ -3390,6 +3413,12 @@
           <GDBName/>
           <GDBServerType>Local</GDBServerType>
           <OtherFlags/>
+          <ICEEnablePCSampling>no</ICEEnablePCSampling>
+          <ICESamplingFreq>1000</ICESamplingFreq>
+          <RemoteICEEnablePCSampling>no</RemoteICEEnablePCSampling>
+          <RemoteICESamplingPort>1026</RemoteICESamplingPort>
+          <Version>latest</Version>
+          <SupportRemoteICEAsyncDebug>no</SupportRemoteICEAsyncDebug>
         </ConfigICE>
         <ConfigSIM>
           <SIMTarget/>
@@ -3397,6 +3426,7 @@
           <NoGraphic>yes</NoGraphic>
           <Log>no</Log>
           <SimTrace>no</SimTrace>
+          <Version>latest</Version>
         </ConfigSIM>
         <ConfigOpenOCD>
           <OpenOCDExecutablePath/>
@@ -3406,10 +3436,13 @@
           <OpenOCDTclPort>6666</OpenOCDTclPort>
           <OpenOCDConfigOptions/>
           <OpenOCDTimeout>5000</OpenOCDTimeout>
+          <PluginID>openocd-sifive</PluginID>
+          <Version>latest</Version>
         </ConfigOpenOCD>
       </Debug>
       <Flash>
         <InitFile>$(ProjectPath)..\..\..\..\..\..\..\tools\w800\utilities\flashinit</InitFile>
+        <PreInit/>
         <Erase>Erase Sectors</Erase>
         <Algorithms Path=""/>
         <Program>no</Program>
@@ -3417,20 +3450,10 @@
         <ResetAndRun>no</ResetAndRun>
         <ResetType>Soft Reset</ResetType>
         <SoftResetVal/>
-        <External>no</External>
-        <Command/>
-        <Arguments/>
+        <External>yes</External>
+        <Command>$(ProjectPath)/../../../../../wm_tool.exe</Command>
+        <Arguments> -c COM10 -rs rts -ds 2M -dl $(ProjectPath)/../../../../../../../bin/w800/w800.fls</Arguments>
       </Flash>
     </BuildConfig>
   </BuildConfigs>
-  <DebugSessions>
-    <watchExpressions/>
-    <memoryExpressions/>
-    <statistics/>
-    <peripheralTabs/>
-    <WatchDisplayFormat/>
-    <LocalDisplayFormat/>
-    <debugLayout/>
-    <memoryTabColSizeExpressions/>
-  </DebugSessions>
 </Project>
