@@ -38,23 +38,25 @@ void demo_console_malloc(void)
 // Interrupt Handler!
 s16 demo_console_rx(u16 len, void* user_data)
 {
-	tls_uart_read(TLS_UART_0, tmbuf, len);
-	for(u16 i = 0; i<len; i++){
-		if(tmbuf[i] == '\n'){
-			gstConsole.rx_buf[ii++] = 0;
-			//printf("rcvd:%s\n", (char *)gstConsole.rx_buf);
-			ii=0;
-			tls_os_queue_send(demo_q, (void *)1, 0);
-		}
-		else{
-        	gstConsole.rx_buf[ii++] = tmbuf[i];
-			if(ii == DEMO_CONSOLE_BUF_SIZE){
-				ii=0;
-				tls_os_queue_send(demo_q, (void *)1, 0); // string is too long
-			}
-    	}
-	}
-	/*
+    printf(".");
+
+    tls_uart_read(TLS_UART_0, tmbuf, len);
+    for(u16 i = 0; i<len; i++){
+        if(tmbuf[i] == '\n'){
+        gstConsole.rx_buf[ii++] = 0;
+        //printf("rcvd:%s\n", (char *)gstConsole.rx_buf);
+        ii=0;
+        tls_os_queue_send(demo_q, (void *)1, 0);
+    }
+    else{
+        gstConsole.rx_buf[ii++] = tmbuf[i];
+            if(ii == DEMO_CONSOLE_BUF_SIZE){
+                ii=0;
+                tls_os_queue_send(demo_q, (void *)1, 0); // string is too long
+            }
+        }
+    }
+    /*
     if (gstConsole.MsgNum < 3)
     {
         gstConsole.MsgNum ++;
@@ -206,81 +208,80 @@ int demo_cmd_execute(Demo_Console *sys)
     u8 *ptmp_param = NULL;
 
     u8 *buf = NULL;
-	u8 *pparam_equal = NULL;
+    u8 *pparam_equal = NULL;
     u8 *pparam_begin = NULL;
     u8 *pparam_end = NULL;
     u8 *comma;
     u8 *arg[MAX_DEMO_ARG] = {NULL};
     int len;
-	u8 *strfirst = NULL;
-	u8 *str_r = NULL;
-	u8 *str_n = NULL;
+    u8 *strfirst = NULL;
+    u8 *str_r = NULL;
+    u8 *str_n = NULL;
 
     for(i = 0; ; i++)
     {
-    	strfirst = (u8 *)strstr((char *)sys->rx_buf, console_tbl[i].cmd);
+    strfirst = (u8 *)strstr((char *)sys->rx_buf, console_tbl[i].cmd);
         if (strfirst != NULL)
         {
-			/*remove \r\n from input string*/
-			str_r = (u8 *)strchr((char *)strfirst, '\r');
-			str_n = (u8 *)strchr((char *)strfirst, '\n');
-			if (str_r&&(str_n == NULL))
-			{
-				if (str_r > strfirst)
-				{
-					strfirst[str_r - strfirst] = '\0';
-				}
-			}
-			else if ((str_r == NULL)&&str_n)
-			{
-				if (str_n > strfirst)
-				{
-					strfirst[str_n - strfirst] = '\0';
-				}
-			}
-			else if (str_r && str_n)
-			{
-				if (((str_r > str_n) && (str_r > strfirst)))
-				{
-					strfirst[str_n - strfirst] = '\0';
-				}
-				else if ((str_r < str_n) && (str_n > strfirst))
-				{
-					strfirst[str_r - strfirst] = '\0';
-				}
-			}
+            /*remove \r\n from input string*/
+            str_r = (u8 *)strchr((char *)strfirst, '\r');
+            str_n = (u8 *)strchr((char *)strfirst, '\n');
+            if (str_r&&(str_n == NULL))
+            {
+                if (str_r > strfirst)
+                {
+                    strfirst[str_r - strfirst] = '\0';
+                }
+            }
+            else if ((str_r == NULL)&&str_n)
+            {
+                if (str_n > strfirst)
+                {
+                    strfirst[str_n - strfirst] = '\0';
+                }
+            }
+            else if (str_r && str_n)
+            {
+                if (((str_r > str_n) && (str_r > strfirst)))
+                {
+                    strfirst[str_n - strfirst] = '\0';
+                }
+                else if ((str_r < str_n) && (str_n > strfirst))
+                {
+                    strfirst[str_r - strfirst] = '\0';
+                }
+            }
 
             /*parser()*/
-			pparam_equal = (u8 *)strchr((char *)(sys->rx_buf + strlen(console_tbl[i].cmd)), '=');
-			pparam_begin = (u8 *)strchr((char *)(sys->rx_buf + strlen(console_tbl[i].cmd)), '(');
-			if (pparam_equal)
-			{
-				if (pparam_begin && (pparam_begin > pparam_equal))
-				{
-					if (pparam_equal - strfirst > strlen(console_tbl[i].cmd))
-					{
-						continue;
-					}
-				}
-				if(!pparam_begin)
-				{
-				    printf("\ndemo cmd short\n");
-				    return DEMO_CONSOLE_SHORT_CMD;
-				}
-			}
-			else
-			{
-				if (pparam_begin && (pparam_begin - strfirst > strlen(console_tbl[i].cmd)))
-				{
-					continue;
-				}
+            pparam_equal = (u8 *)strchr((char *)(sys->rx_buf + strlen(console_tbl[i].cmd)), '=');
+            pparam_begin = (u8 *)strchr((char *)(sys->rx_buf + strlen(console_tbl[i].cmd)), '(');
+            if (pparam_equal)
+            {
+                if (pparam_begin && (pparam_begin > pparam_equal))
+                {
+                    if (pparam_equal - strfirst > strlen(console_tbl[i].cmd))
+                    {
+                        continue;
+                    }
+                }
+                if(!pparam_begin)
+                {
+                    printf("\ndemo cmd short\n");
+                    return DEMO_CONSOLE_SHORT_CMD;
+                }
+            }
+            else {
+                if (pparam_begin && (pparam_begin - strfirst > strlen(console_tbl[i].cmd)))
+                {
+                    continue;
+                }
 
-				/*if no '(', compare the cmd string with input string*/
-				if (!pparam_begin && (strlen((char *)strfirst) != strlen(console_tbl[i].cmd)))
-				{
-					continue;
-				}
-			}
+                /*if no '(', compare the cmd string with input string*/
+                if (!pparam_begin && (strlen((char *)strfirst) != strlen(console_tbl[i].cmd)))
+                {
+                    continue;
+                }
+            }
 
             pparam_end = (u8 *)strchr((char *)(pparam_begin + 1), ')');
             if (!pparam_begin && !pparam_end)
@@ -438,7 +439,8 @@ void demo_console_task(void *sdata)
     gstConsole.rptr = 0;
     gstConsole.rx_data_len = DEMO_CONSOLE_BUF_SIZE;
     tls_uart_set_baud_rate(TLS_UART_0, 115200);
-	tls_uart_rx_callback_register(TLS_UART_0, demo_console_rx, NULL);
+    tls_uart_rx_callback_register(TLS_UART_0, demo_console_rx, NULL);
+    printf("UART0 callback registered");
 
     for(;;)
     {
@@ -446,12 +448,12 @@ void demo_console_task(void *sdata)
         switch((u32)msg)
         {
         case 1:
-			/*
+            /*
             while(1)
             {
                 //ret = tls_uart_read(TLS_UART_0, gstConsole.rx_buf + gstConsole.rptr, gstConsole.rx_data_len);
-				// debug out
-				//printf("tls_uart_read(...) returns %d, rx_data_len == %d\n", ret, gstConsole.rx_data_len);
+                // debug out
+                //printf("tls_uart_read(...) returns %d, rx_data_len == %d\n", ret, gstConsole.rx_data_len);
 
                 if(ret <= 0)
                     break;
@@ -463,21 +465,21 @@ void demo_console_task(void *sdata)
             }
             if(gstConsole.rptr == 0)
                 break;
-			*/
-            ret = demo_cmd_execute(&gstConsole);	//parse command and execute if needed
+            */
+            ret = demo_cmd_execute(&gstConsole);    //parse command and execute if needed
             if(DEMO_CONSOLE_CMD == ret)
             {
                 /*modify*/
-                //printf("Demo cmd is finished\r\n");
+                printf("Demo cmd is finished\r\n");
             }
             else if(DEMO_CONSOLE_WRONG_CMD == ret)
             {
-                //printf("Demo cmd is wrong\r\n");
+                printf("Demo cmd is wrong\r\n");
             }
             else if(DEMO_CONSOLE_SHORT_CMD == ret)
             {
                 //param not passed all, do nothing.
-                //printf("Demo cmd is short\r\n");
+                printf("Demo cmd is short\r\n");
             }
             memset(gstConsole.rx_buf, 0, DEMO_CONSOLE_BUF_SIZE);	/*After command finished transfering, clear buffer*/
             gstConsole.rptr = 0;

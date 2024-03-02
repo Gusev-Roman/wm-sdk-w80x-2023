@@ -29,15 +29,16 @@
 void UserMain(void)
 {
 	char *q;
-	tls_sys_clk_set(CPU_CLK_80M);	// set CPU speed to 80M
-
-	printf("PSRAM usage demo\n");
+	tls_sys_clk_set(CPU_CLK_160M);	// set CPU speed to 80M
+/*
+	printf("PSRAM usage demo 2\n");
 
 	wm_psram_config(0);		// select PB0-PB5
 	psram_init(PSRAM_QPI);		// select 4-wire mode
-        init_heap();			// create double-linked structure
+	vTaskDelay(10);
+	init_heap();			// create double-linked structure
 
-	char *ppp = (char *)0x3000000; // begin of PSRAM
+	char *ppp = (char *)PSRAM_ADDR_START; // begin of PSRAM
   	for(int i=0; i < 100; i++){
 	    ppp[i] = ' ' + i;
 	}
@@ -56,7 +57,7 @@ void UserMain(void)
 		psfree(q);
 		vTaskDelay(500);	// 1s delay
 	}
-
+*/
 #if DEMO_CONSOLE
 	CreateDemoTask();
 #endif

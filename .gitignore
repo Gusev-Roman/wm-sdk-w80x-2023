@@ -3,4 +3,7 @@ bin
 /tools/w800/.config
 /tools/w800/.config.old
 tools/w800/wm_getver
-Obj/*
+Obj/
+.cache/
+*.o
+*.d

@@ -5,7 +5,7 @@
 #define DEMO_OFF	0
 
 //demo console
-#define DEMO_CONSOLE				DEMO_OFF
+#define DEMO_CONSOLE				DEMO_ON
 
 //socket demo
 #define DEMO_STD_SOCKET_CLIENT	    (DEMO_OFF && DEMO_CONSOLE)
@@ -19,43 +19,43 @@
 #define DEMO_SOCKET_CLIENT_SERVER   (DEMO_OFF && DEMO_CONSOLE)
 
 //apsta demo
-#define DEMO_APSTA   		  		(DEMO_OFF && DEMO_CONSOLE)
+#define DEMO_APSTA   		  		(DEMO_ON && DEMO_CONSOLE)
 
 //Uart rx&tx demo
-#define DEMO_UARTx   		  		(DEMO_OFF && DEMO_CONSOLE)
+#define DEMO_UARTx   		  		(DEMO_ON && DEMO_CONSOLE)
 
 //AP dmeo
-#define DEMO_SOFT_AP   		  		(DEMO_OFF && DEMO_CONSOLE)
+#define DEMO_SOFT_AP   		  		(DEMO_ON && DEMO_CONSOLE)
 
 //WPS demo
 #define DEMO_WPS					(DEMO_OFF && DEMO_CONSOLE && TLS_CONFIG_WPS && TLS_IEEE8021X_EAPOL)
 
 //gpio demo
-#define DEMO_GPIO					(DEMO_OFF && DEMO_CONSOLE)
+#define DEMO_GPIO					(DEMO_ON && DEMO_CONSOLE)
 
 //flash demo
-#define DEMO_FLASH					(DEMO_OFF && DEMO_CONSOLE)
+#define DEMO_FLASH					(DEMO_ON && DEMO_CONSOLE)
 
 //master spi demo
-#define DEMO_MASTER_SPI				(DEMO_OFF && DEMO_CONSOLE)
+#define DEMO_MASTER_SPI				(DEMO_ON && DEMO_CONSOLE)
 
 //Encryption&Decryption demo
 #define DEMO_ENCRYPT				(DEMO_ON && DEMO_CONSOLE)
 
 //rsa demo
-#define DEMO_RSA					(DEMO_OFF && DEMO_CONSOLE)
+#define DEMO_RSA					(DEMO_ON && DEMO_CONSOLE)
 
 //rtc demo
-#define DEMO_RTC					(DEMO_OFF && DEMO_CONSOLE)
+#define DEMO_RTC					(DEMO_ON && DEMO_CONSOLE)
 
 //timer demo
-#define DEMO_TIMER					(DEMO_OFF && DEMO_CONSOLE)
+#define DEMO_TIMER					(DEMO_ON && DEMO_CONSOLE)
 
 //i2c demo
 #define DEMO_I2C					(DEMO_ON && DEMO_CONSOLE)
 
 //pwm demo
-#define DEMO_PWM					(DEMO_OFF && DEMO_CONSOLE)
+#define DEMO_PWM					(DEMO_ON && DEMO_CONSOLE)
 
 //pmu demo
 #define DEMO_PMU					(DEMO_OFF && DEMO_CONSOLE)
@@ -70,7 +70,7 @@
 #define DEMO_ADC					(DEMO_ON && DEMO_CONSOLE)
 
 //slave spi demo
-#define DEMO_SLAVE_SPI				(DEMO_OFF && DEMO_CONSOLE)
+#define DEMO_SLAVE_SPI				(DEMO_ON && DEMO_CONSOLE)
 
 //7816
 #define DEMO_7816					(DEMO_OFF && DEMO_CONSOLE)
@@ -83,13 +83,13 @@
 
 
 //ssl server demo
-#define DEMO_SSL_SERVER				(DEMO_OFF && DEMO_CONSOLE)
+#define DEMO_SSL_SERVER				(DEMO_ON && DEMO_CONSOLE)
 
 //websocket demo
 #define DEMO_WEBSOCKETS				(DEMO_OFF && DEMO_CONSOLE)
 
 //http demo
-#define DEMO_HTTP					(DEMO_OFF && DEMO_CONSOLE)
+#define DEMO_HTTP					(DEMO_OFF && DEMO_CONSOLE) // undefined references (?)
 
 #define DEMO_SCAN					(DEMO_ON && DEMO_CONSOLE)
 #define DEMO_HTTPS                  (DEMO_OFF && DEMO_CONSOLE)
