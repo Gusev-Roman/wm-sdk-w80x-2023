@@ -2,6 +2,7 @@
 <CDK_Workspace Name="CDK_WS" Database="">
   <Project Name="W800_SDK" Path="W800_SDK/W800_SDK.cdkproj" Active="Yes"/>
   <Project Name="W800_SDK_BT" Path="W800_SDK_BT/W800_SDK_BT.cdkproj" Active="No"/>
+  <DefaultPackPath>$(CDKPath)/CSKY/PACK</DefaultPackPath>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Environment/>
