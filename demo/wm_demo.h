@@ -5,7 +5,9 @@
 #define DEMO_OFF	0
 
 //demo console
-#define DEMO_CONSOLE				DEMO_ON
+#ifndef DEMO_CONSOLE
+#define DEMO_CONSOLE                DEMO_OFF
+#endif
 
 //socket demo
 #define DEMO_STD_SOCKET_CLIENT	    (DEMO_OFF && DEMO_CONSOLE)

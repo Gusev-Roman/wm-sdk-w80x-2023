@@ -3333,7 +3333,7 @@
         <Preprocessor>no</Preprocessor>
         <Disassmeble>no</Disassmeble>
         <CallGraph>no</CallGraph>
-        <Map>no</Map>
+        <Map>yes</Map>
       </Output>
       <User>
         <BeforeCompile>

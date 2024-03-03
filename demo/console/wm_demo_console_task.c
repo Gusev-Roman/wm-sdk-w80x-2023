@@ -430,7 +430,7 @@ int demo_cmd_execute(Demo_Console *sys)
 //console task use UART0 as communication port with PC
 void demo_console_task(void *sdata)
 {
-    void *msg;
+//    void *msg;
     int ret = 0;
 
     demo_console_show_help(NULL);
@@ -438,57 +438,33 @@ void demo_console_task(void *sdata)
     gstConsole.rptr = 0;
     gstConsole.rx_data_len = DEMO_CONSOLE_BUF_SIZE;
     tls_uart_set_baud_rate(TLS_UART_0, 115200);
-	tls_uart_rx_callback_register(TLS_UART_0, demo_console_rx, NULL);
-
-    for(;;)
-    {
-        tls_os_queue_receive(demo_q, (void **)&msg, 0, 0); // message must signal whole string is in buffer yet! No reading!
-        switch((u32)msg)
-        {
-        case 1:
-			/*
-            while(1)
-            {
-                //ret = tls_uart_read(TLS_UART_0, gstConsole.rx_buf + gstConsole.rptr, gstConsole.rx_data_len);
-				// debug out
-				//printf("tls_uart_read(...) returns %d, rx_data_len == %d\n", ret, gstConsole.rx_data_len);
-
-                if(ret <= 0)
-                    break;
-                gstConsole.rx_data_len -= ret;
-                gstConsole.rptr += ret;
-                if(gstConsole.rx_data_len <= 0)
-                    break;
-                tls_os_time_delay(20);
-            }
-            if(gstConsole.rptr == 0)
+    //tls_uart_rx_callback_register(TLS_UART_0, demo_console_rx, NULL);
+    
+hloop:    
+    while(1){
+        ret = tls_uart_try_read(TLS_UART_0, 1);
+        if(ret > 0) {
+            ret = tls_uart_read(TLS_UART_0, gstConsole.rx_buf + gstConsole.rptr, 1); // read one char
+            gstConsole.rptr++;
+            if(gstConsole.rx_buf[gstConsole.rptr - 1] == '\n'){
                 break;
-			*/
-            ret = demo_cmd_execute(&gstConsole);	//parse command and execute if needed
-            if(DEMO_CONSOLE_CMD == ret)
-            {
-                /*modify*/
-                //printf("Demo cmd is finished\r\n");
             }
-            else if(DEMO_CONSOLE_WRONG_CMD == ret)
-            {
-                //printf("Demo cmd is wrong\r\n");
-            }
-            else if(DEMO_CONSOLE_SHORT_CMD == ret)
-            {
-                //param not passed all, do nothing.
-                //printf("Demo cmd is short\r\n");
-            }
-            memset(gstConsole.rx_buf, 0, DEMO_CONSOLE_BUF_SIZE);	/*After command finished transfering, clear buffer*/
-            gstConsole.rptr = 0;
-
-            if(gstConsole.MsgNum)
-                gstConsole.MsgNum --;
-            break;
-        default:
-            break;
+            tls_uart_write(TLS_UART_0, (char *)(gstConsole.rx_buf + gstConsole.rptr - 1), 1);
+        }
+        else{
+            tls_os_time_delay(50);  // wait 1/10s and try again
         }
     }
+    ret = demo_cmd_execute(&gstConsole);
+    if(ret == DEMO_CONSOLE_CMD){
+        tls_uart_write(TLS_UART_0, "OK\n", 3);
+    }
+    else{
+        tls_uart_write(TLS_UART_0, "ERROR\n", 6);
+    }
+    memset(gstConsole.rx_buf, 0, DEMO_CONSOLE_BUF_SIZE);	/*After command finished transfering, clear buffer*/
+    gstConsole.rptr = 0;
+    goto hloop;
 }
 
 void CreateDemoTask(void)
