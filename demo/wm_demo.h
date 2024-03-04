@@ -33,10 +33,10 @@
 #define DEMO_WPS					(DEMO_OFF && DEMO_CONSOLE && TLS_CONFIG_WPS && TLS_IEEE8021X_EAPOL)
 
 //gpio demo
-#define DEMO_GPIO					(DEMO_OFF && DEMO_CONSOLE)
+#define DEMO_GPIO					(DEMO_ON && DEMO_CONSOLE)
 
 //flash demo
-#define DEMO_FLASH					(DEMO_OFF && DEMO_CONSOLE)
+#define DEMO_FLASH					(DEMO_ON && DEMO_CONSOLE)
 
 //master spi demo
 #define DEMO_MASTER_SPI				(DEMO_OFF && DEMO_CONSOLE)

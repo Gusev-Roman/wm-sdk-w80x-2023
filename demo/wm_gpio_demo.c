@@ -39,7 +39,7 @@ int gpio_demo(void)
 	u16 ret;
 
 	//≤‚ ‘gpioB 6,7
-	for(gpio_pin = WM_IO_PB_06; gpio_pin <= WM_IO_PB_07; gpio_pin ++)
+	for(gpio_pin = WM_IO_PB_16; gpio_pin <= WM_IO_PB_18; gpio_pin ++)
 	{
 		tls_gpio_cfg(gpio_pin, WM_GPIO_DIR_INPUT, WM_GPIO_ATTR_FLOATING);
 		ret = tls_gpio_read(gpio_pin);	/*œ»∂¡ƒ¨»œ◊¥Ã¨*/
@@ -77,7 +77,8 @@ int gpio_demo(void)
 		tls_gpio_write(gpio_pin,0); 		/*–¥µÕ*/
 		ret = tls_gpio_read(gpio_pin);
 		printf("\ngpio%c[%d] pulllow value==[%d]\n", (gpio_pin >= WM_IO_PB_00) ? 'B':'A', (gpio_pin >= WM_IO_PB_00) ?(gpio_pin - WM_IO_PB_00):gpio_pin,ret);
-
+		tls_os_time_delay(500);
+		tls_gpio_cfg(gpio_pin, WM_GPIO_DIR_INPUT, WM_GPIO_ATTR_FLOATING);
 	}
 
 	return WM_SUCCESS;
