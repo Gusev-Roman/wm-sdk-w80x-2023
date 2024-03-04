@@ -2,7 +2,7 @@ w801 SDK v1.0.10+
 
 install miniterm:
 
-	sudo apt install python3-serial
+	sudo apt install python3-serial 3.5
 	
 set permissions:
 
@@ -12,7 +12,7 @@ add user to dialout group (and relogin)
 
 	sudo -E usermod -a -G dialout $LOGNAME
 	
-configure port and toolchain path
+configure port and toolchain path (toolchain is here: https://github.com/droppingy/hlk-w80x-toolchain.git)
 
 	make menuconfig
 
