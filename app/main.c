@@ -39,7 +39,7 @@ static void demo_monitor_stalist_tim(void *ptmr, void *parg)
     stabuf = tls_mem_alloc(1024);
     if (stabuf)
     {
-		stanum = 0;
+	stanum = 0;
     	memset(stabuf, 0, 1024);
         tls_wifi_get_authed_sta_info(&stanum, stabuf, 1024);
         if (totalstanum != stanum)
@@ -99,11 +99,11 @@ int CreateAP(){
     struct tls_softap_info_t *apinfo;
     struct tls_ip_info_t *ipinfo;
     u8 wireless_protocol = 0;
-	u8 ssid_set = 0;
-	u8 ssid_len = 0;
-	u8 ret = 0;
-	const char *ssid = "W801AP";
-	const char *key = "12345678";
+    u8 ssid_set = 0;
+    u8 ssid_len = 0;
+    u8 ret = 0;
+    const char *ssid = "W801AP";
+    const char *key = "12345678";
 
     ipinfo = tls_mem_alloc(sizeof(struct tls_ip_info_t));
     if (!ipinfo){
@@ -145,7 +145,7 @@ int CreateAP(){
     /*ip info:ipaddress, netmask, dns*/
     ipinfo->ip_addr[0] = 192;
     ipinfo->ip_addr[1] = 168;
-    ipinfo->ip_addr[2] = 1;
+    ipinfo->ip_addr[2] = 16;
     ipinfo->ip_addr[3] = 1;
     ipinfo->netmask[0] = 255;
     ipinfo->netmask[1] = 255;
@@ -153,8 +153,8 @@ int CreateAP(){
     ipinfo->netmask[3] = 0;
     MEMCPY(ipinfo->dnsname, "w801.local", sizeof("w801.local"));
 
-	blackstate = DEL_BLACK_STATE;
-	//tls_wifi_softap_add_blacksta(blackmac);
+    blackstate = DEL_BLACK_STATE;
+    //tls_wifi_softap_add_blacksta(blackmac);
 
     ret = tls_wifi_softap_create(apinfo, ipinfo);
     wm_printf("\n ap create %s ! \n", (ret == WM_SUCCESS) ? "Successfully" : "Error");
@@ -166,21 +166,22 @@ int CreateAP(){
             tls_os_timer_delete(sta_monitor_tim);
             sta_monitor_tim = NULL;
         }
-        tls_os_timer_create(&sta_monitor_tim, demo_monitor_stalist_tim, NULL, 500,true, (u8 *)"dickpic");
+        tls_os_timer_create(&sta_monitor_tim, demo_monitor_stalist_tim, NULL, 500, true, (u8 *)"dickpic");
         tls_os_timer_start(sta_monitor_tim);
     }
-	wm_printf("closing softAP...\n");
     tls_mem_free(ipinfo);
-    tls_mem_free(apinfo);
+    tls_mem_free(apinfo);	// процедура завершается, но точка доступа продолжает принимать подключения
     return ret;
 }
 
 void UserMain(void)
 {
-	printf("\n user task \n");
+    printf("\n user task \n");
 //	lwip_init();
 //	httpd_init();		// есть смысл это делать только после установки связи с точкой доступа
-	CreateAP();
+    CreateAP();
+    httpd_init();
+
 #if DEMO_CONSOLE
 	CreateDemoTask();
 #endif
