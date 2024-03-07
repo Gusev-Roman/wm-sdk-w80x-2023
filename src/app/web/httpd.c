@@ -1659,6 +1659,7 @@ static struct tcp_pcb *web_pcb = NULL;
 void httpd_init(unsigned short port)
 {
     gwebcfgmode = 0;
+    printf("http_init() start\n");
     if (web_pcb)
     {
     	return;
@@ -1666,15 +1667,19 @@ void httpd_init(unsigned short port)
 
 #ifdef INCLUDE_HTTPD_CGI
   extern tCGI Cgi[8];
+  printf("http_set_cgi_handlers()...\n");
   http_set_cgi_handlers(Cgi, sizeof(Cgi)/sizeof(tCGI));
 #endif
 
   web_pcb = tcp_new();
   ip_set_option(web_pcb, SOF_REUSEADDR);
   tcp_bind(web_pcb, IP_ADDR_ANY, port);
+  printf("tcp_listen()...\n");
   web_pcb = tcp_listen(web_pcb);
   tcp_arg(web_pcb, web_pcb);
+  printf("tcp_accept()...\n");
   tcp_accept(web_pcb, http_accept);
+  printf("httpd_init() ending...\n");
   //printf("web_pcb:%x\n", web_pcb);
   
 }
@@ -1682,6 +1687,7 @@ void httpd_init(unsigned short port)
 void httpd_deinit(void)
 {
     err_t err;
+    printf("http_deinit()...\n");
 	if (web_pcb)
 	{
 		tcp_arg(web_pcb, NULL);

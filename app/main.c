@@ -16,7 +16,8 @@
 #include "lwip/init.h"
 #include "lwip/apps/httpd.h"
 #include "lwip/apps/httpd_opts.h"
-#include "wm_include.h"
+#include "wm_include.h" // wm_params.h there
+#include "wm_param.h"
 #include <stdio.h>
 
 #define ADD_BLACK_STATE  0
@@ -175,12 +176,30 @@ int CreateAP(){
     return ret;
 }
 
+static struct tls_param_flash my_param;
+extern struct tls_param_flash *pfparam;
+
 void UserMain(void)
 {
 	printf("\n user task \n");
+    int z = tls_param_init();
+    printf("tls_param_init() == %d\n", z);
+    z = tls_param_get(TLS_PARAM_ID_ALL, &my_param, TRUE);
+    printf("tls_param_get() == %d\n", z);
+    printf("magic:%X, partition: %X, mod_cnt: %d, len: %d, crc: %X\n", pfparam->magic, pfparam->partition_num, pfparam->modify_count, pfparam->length, pfparam->crc32);
+    printf("ssid:%s\n", pfparam->parameters.ssid.ssid);
+    printf("channel_enable:%d\n", pfparam->parameters.channel_enable);
+    printf("channel:%d\n", pfparam->parameters.channel);
+    printf("wireless_region:%d\n", pfparam->parameters.wireless_region);
+    printf("encry:%d\n", pfparam->parameters.encry);
+    printf("wireless_protocol:%d\n", pfparam->parameters.wireless_protocol);
+    printf("key:%s\n", pfparam->parameters.key.psk);
+    
 //	lwip_init();
 //	httpd_init();		// есть смысл это делать только после установки связи с точкой доступа
 	CreateAP();
+    httpd_init(8080);
+    
 #if DEMO_CONSOLE
 	CreateDemoTask();
 #endif

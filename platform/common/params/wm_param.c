@@ -25,6 +25,7 @@
 
 #define USE_TWO_RAM_FOR_PARAMETER  0
 static struct tls_param_flash flash_param;
+struct tls_param_flash *pfparam = &flash_param;
 #if USE_TWO_RAM_FOR_PARAMETER
 static struct tls_sys_param sram_param;
 #endif
