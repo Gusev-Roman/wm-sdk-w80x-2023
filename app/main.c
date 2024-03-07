@@ -18,6 +18,7 @@
 #include "lwip/apps/httpd_opts.h"
 #include "wm_include.h" // wm_params.h there
 #include "wm_param.h"
+#include "utils.h"
 #include <stdio.h>
 
 #define ADD_BLACK_STATE  0
@@ -52,9 +53,9 @@ static void demo_monitor_stalist_tim(void *ptmr, void *parg)
             }
         }
         totalstanum = stanum;
-		stanum = 0;
-		memset(stabuf, 0, 1024);
-		tls_wifi_softap_get_blackinfo(&stanum, stabuf, 1024);
+        stanum = 0;
+        memset(stabuf, 0, 1024);
+        tls_wifi_softap_get_blackinfo(&stanum, stabuf, 1024);
         if(stanum){     // only if stanum not zero
             wm_printf("black sta mac:\n");
             for (i = 0; i < stanum ; i++)
@@ -63,19 +64,19 @@ static void demo_monitor_stalist_tim(void *ptmr, void *parg)
             }
         }
 
-		switch (blackstate)
-		{
-			case DEL_BLACK_STATE: /*delete sta's for black list*/
-				delcnt++;
-				if (delcnt > delblackstatimeout)
+        switch (blackstate)
+	{
+		case DEL_BLACK_STATE: /*delete sta's for black list*/
+			delcnt++;
+		        if (delcnt > delblackstatimeout)
+			{
+				for (i = 0; i < stanum ; i++)
 				{
-					for (i = 0; i < stanum ; i++)
-					{
-						tls_wifi_softap_del_blacksta(&stabuf[i*6]);
-					}
-					delcnt = 0;
-					blackstate = ADD_BLACK_STATE;
+					tls_wifi_softap_del_blacksta(&stabuf[i*6]);
 				}
+				delcnt = 0;
+				blackstate = ADD_BLACK_STATE;
+			}
 			break;
 			case ADD_BLACK_STATE:  /*add station into black list*/
 				addrefusecnt ++;
@@ -180,7 +181,7 @@ extern struct tls_param_flash *pfparam;
 
 void UserMain(void)
 {
-	printf("\n user task \n");
+    printf("\n user task \n");
     int z = tls_param_init();
     printf("tls_param_init() == %d\n", z);
     z = tls_param_get(TLS_PARAM_ID_ALL, &my_param, TRUE);
@@ -193,12 +194,11 @@ void UserMain(void)
     printf("encry:%d\n", pfparam->parameters.encry);
     printf("wireless_protocol:%d\n", pfparam->parameters.wireless_protocol);
     printf("key:%s\n", pfparam->parameters.key.psk);
-    
-//	lwip_init();
-//	httpd_init();		// есть смысл это делать только после установки связи с точкой доступа
-	CreateAP();
-    httpd_init(8080);
-    
+
+//    httpd_init();		// есть смысл это делать только после установки связи с точкой доступа
+    CreateAP();
+    httpd_init();
+
 #if DEMO_CONSOLE
 	CreateDemoTask();
 #endif
