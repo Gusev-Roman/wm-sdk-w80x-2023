@@ -13,10 +13,10 @@
 *****************************************************************************/ 
 #define LWIP_HTTPD_CGI 1
 
-#include "lwip/init.h"
-#include "lwip/apps/httpd.h"
 #include "lwip/apps/httpd_opts.h"
 #include "wm_include.h" // wm_params.h there
+
+#include "httpd.h"
 #include "wm_param.h"
 #include "utils.h"
 #include <stdio.h>
@@ -197,7 +197,7 @@ void UserMain(void)
 
 //    httpd_init();		// есть смысл это делать только после установки связи с точкой доступа
     CreateAP();
-    httpd_init();
+    httpd_init(80);
 
 #if DEMO_CONSOLE
 	CreateDemoTask();

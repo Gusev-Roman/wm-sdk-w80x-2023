@@ -3255,30 +3255,6 @@
     <memoryTabColSizeExpressions/>
   </DebugSessions>
   <Dependencies Name="BuildSet"/>
-  <VirtualDirectory Name="http">
-    <File Name="http/altcp_proxyconnect.c">
-      <FileOption/>
-    </File>
-    <VirtualDirectory Name="fs">
-      <File Name="http/fs/404.html">
-        <FileOption/>
-      </File>
-      <VirtualDirectory Name="img">
-        <File Name="http/fs/img/sics.gif">
-          <FileOption/>
-        </File>
-      </VirtualDirectory>
-      <File Name="http/fs/index.html">
-        <FileOption/>
-      </File>
-    </VirtualDirectory>
-    <File Name="http/fsdata.c">
-      <FileOption/>
-    </File>
-    <File Name="http/fsdata.h">
-      <FileOption/>
-    </File>
-  </VirtualDirectory>
   <BuildConfigs>
     <BuildConfig Name="BuildSet">
       <Target>
@@ -3372,10 +3348,18 @@
           <RunUserProg>yes</RunUserProg>
           <UserProgName>../../../../../../../tools/w800/utilities/cdk_aft_build.sh;../../../../../../../tools/w800/utilities/aft_build_project.sh</UserProgName>
         </AfterMake>
-        <Tools/>
+        <Tools>
+          <Tool>
+            <Name>terminal</Name>
+            <RunIndependent>no</RunIndependent>
+            <Command>$(ProjectPath)/../../../../../../../../../AppData/Roaming/Python/Python39/Scripts/pyserial-miniterm.exe</Command>
+            <Args>--rts 0 com10 115200</Args>
+            <InitFolder>$(ProjectPath)/../../../../../../../../../AppData/Roaming/Python/Python39/Scripts</InitFolder>
+          </Tool>
+        </Tools>
       </User>
       <Compiler>
-        <Define>GCC_COMPILE=1;TLS_CONFIG_CPU_XT804=1;NIMBLE_FTR=1;NO_PERSISTENCE=1;USE_SELECT=1;HIGH_PERFORMANCE=1;USE_MBEDTLS=1;DEMO_CONSOLE=1;LWIP_HTTPD_CGI=1;HTTPD_DEBUG=1;INCLUDE_HTTPD_DEBUG=1</Define>
+        <Define>GCC_COMPILE=1;TLS_CONFIG_CPU_XT804=1;NIMBLE_FTR=1;NO_PERSISTENCE=1;USE_SELECT=1;HIGH_PERFORMANCE=1;USE_MBEDTLS=1;DEMO_CONSOLE=1;LWIP_HTTPD_CGI=1;HTTPD_DEBUG=1;INCLUDE_HTTPD_DEBUG=1;HTTPD_SERVER_PORT=8888</Define>
         <Undefine/>
         <Optim>Default</Optim>
         <DebugLevel>Default (-g)</DebugLevel>

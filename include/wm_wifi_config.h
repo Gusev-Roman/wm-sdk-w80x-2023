@@ -16,7 +16,7 @@
 /*******************WIFI INFO**************************
   			Below Switch Only for Reference!!!
 ********************************************************/
-#define  TLS_CONFIG_AP        				CFG_WIFI_ON
+#define  TLS_CONFIG_AP                      CFG_WIFI_ON
 #define  TLS_CONFIG_11N                     CFG_WIFI_ON
 
 #define  TLS_CONFIG_USE_VENDOR_IE           CFG_WIFI_OFF

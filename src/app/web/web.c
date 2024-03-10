@@ -111,415 +111,86 @@ typedef struct _ID_VALUE{
 #define Web_WebEncry_id  65
 #define Web_AutoHidden_Id      66
 
-#define ENCRYPT_TYPE_OPEN_SYS  0///open
+#define ENCRYPT_TYPE_OPEN_SYS  0 ///open
 #define ENCRYPT_TYPE_WEP_64_BITS  1
 #define ENCRYPT_TYPE_WEP_128_BITS  2
 
 //extern u8* wpa_supplicant_get_mac(void);
 
 const ID_VALUE web_id_tbl[] = {
-   {
-	"Dns",	
-	DNS_Dns_Id,
-	16,
-	9,
-    },
-   {
-	"Gate",	
-	DNS_Gate_Id,
-	17,
-	8,
-    },    
-   {
-   	"Sub",
-	Web_Sub_Id,
-	16,
-	13,
-   },
-    {
-   	"Ip",
-	Web_Ip_Id,
-	15,
-	10,
-   },
-    {
-   	"Ssid",
-	Web_Ssid_Id,
-	17,
-	4,
-   },
-   {
-   	"Encry",
-	Web_Encry_Id,
-	31,
-	0,
-	
-   },
-   {
-   	"KeyType",
-   	KeyType_Id,
-   	15,
-   	0,
-   },
-   {
-   	"Dhcp",
-	Dhcp_Id,
-	10,
-	0,
-		
-   },
-  {
-  	"Auto",
-	Web_Auto_Id,
-	10,
-	0,
-  },
-  {
-  	"Protocol",
-	Web_Protocol_Id,
-	16,
-	0,
-  },
-  {
-  	"Cs",
-	Web_Cs_Id,
-	11,
-	0,
-  },
-  {
-  	"Domain",
-	Web_Domain_Id,
-	19,
-	11,
-  },
-  {
-  	"Port",
-	Web_Port_Id,
-	17,
-	5,
-  },
-  {
-       "Key",
-	 Web_Key_Id,
-	 16,
-	 0,
-  },
-   {
-       "KeyIndex1",
-	 Wep_KeyIndex_Id,
-	 15,
-	 0,
-   },  
-   {
-       "KeyIndex2",
-	 Wep_KeyIndex2_Id,
-	 15,
-	 0,
-   },     {
-       "KeyIndex3",
-	 Wep_KeyIndex3_Id,
-	 15,
-	 0,
-   },     
-   {
-       "KeyIndex4",
-	 Wep_KeyIndex4_Id,
-	 15,
-	 0,
-   },
-   {
-   	"Mode",
-	Web_Mode_Id,
-	30,
-	0,
-   },
-   {
-   	"Bg",
-	Web_Bg_Id,
-	10,
-	0,
-   },
-   {
-   	"Rate",
-	Web_Rate_Id,
-	12,
-	0,
-   },
-    {
-   	"Bssid",
-	Web_Bssid_Id,
-	18,
-	12,
-   },   
-   {
-   	"Channel",
-  	Web_Channel_Id,
-   	15,
-   	0,
-   },
-   {
-   	"Ch1",
-	Web_ChannlListCh1_Id,
-	19,
-	0,
-   },
-    {
-   	"Ch2",
-	Web_ChannlListCh2_Id,
-	19,
-	0,
-   },
-   {
-   	"Ch3",
-	Web_ChannlListCh3_Id,
-	19,
-	0,
-   },
-   {
-   	"Ch4",
-	Web_ChannlListCh4_Id,
-	19,
-	0,
-   },
-    {
-   	"Ch5",
-	Web_ChannlListCh5_Id,
-	19,
-	0,
-   },
-    {
-   	"Ch6",
-	Web_ChannlListCh6_Id,
-	19,
-	0,
-   },
-   {
-   	"Ch7",
-	Web_ChannlListCh7_Id,
-	19,
-	0,
-   },
-    {
-   	"Ch8",
-	Web_ChannlListCh8_Id,
-	19,
-	0,
-   },
-    {
-   	"Ch9",
-	Web_ChannlListCh9_Id,
-	19,
-	0,
-   },
-    {
-   	"Ch10",
-	Web_ChannlListCh10_Id,
-	20,
-	0,
-   },
-    {
-   	"Ch11",
-	Web_ChannlListCh11_Id,
-	20,
-	0,
-   },
-    {
-   	"Ch12",
-	Web_ChannlListCh12_Id,
-	20,
-	0,
-   },
-    {
-   	"Ch13",
-	Web_ChannlListCh13_Id,
-	20,
-	0,
-   },
-     {
-   	"Ch14",
-	Web_ChannlListCh14_Id,
-	20,
-	0,
-   }, 
-   {
-   	"WebPort",
-	Web_WebPort_Id,
-	20,
-	2,
-   },
-   {
-  	 "Baud",
-  	 Web_Baud_Id,
-   	12,
-   	0,
-   },
-  {
-  	"Check",
-	 Web_Check_Id,
-	 13,
-	 0,
-  },
-  {
-  	"DataSize",
-  	Web_DataSize_Id,
-  	16,
-  	0,
-  },
-  {
-  	"StopSize",
-  	Web_StopSize_Id,
-  	16,
-  	0,
-  },  
-  {
-      "EscChar",
-	Web_EscChar_Id,
-	20,
-	2,
-  },
-  {
-      "EscP",
-	Web_EscP_Id,
-	17,
-	4,
-  },
-   {
-      "EscDataP",
-	Web_EscDataP_Id,
-	21,
-	3,
-  },
-    {
-      "EscDataL",
-	Web_EscDataL_Id,
-	21,
-	3,
-  },
-  {
-  	"GPIO1",
-	Web_GPIO1_Id,
-	13,
-	0,
-  },
-  {
-  	"CmdMode",
-	Web_CmdMode_Id,
-	15,
-	0,
-  },  
-  {
-  	"BssidEable",
-	Web_BssidEable_Id,
-	41,
-	0,
-  },
-  {
-  	"PassWord",
-	Web_PassWord_Id,
-	21,
-	6,
-  },
-  {
-  	"TCP_TimeOut",
-	 Web_TCP_TimeOut_id,
-	 24,
-	 5,
-	 
-  },
-  {
-  	"MacAdr",
-	 Web_SysInfo_Macaddr,
-	 19,
-	 1,
-  },
-  {
-  	"HardVer",
-	 Web_SysInfo_HardVer,
-	 20,
-	 1,
-  },
-  {
-  	"FirmVer",
-	 Web_SysInfo_FirmVer,
-	 20,
-	 1,
-  },
-  {
-  	"RelTime",
-	 Web_SysInfo_RelTime,
-	 20,
-	 1,
-  },
-  {
-  	"siteInfo",
-	 Web_SiteInfo_Copyright,
-	 34,
-	 0,
-  },
-  {
-  	"Try_times",
-	Web_Try_times_id,
-	22,
-	3,
-  },
-  {
-	 "roam",
- 	 Web_roam_id,
-  	10,
-  	0,
-  },
-  {
-  	"DnsName",
-	Web_DnsName_Id,
-	20,
-	1,
-  }, 
-  {
-  	"SsidBenable",
-	Web_SsidBroadcast_Id,
-	17,
-	0,  
-  },
-  {
-  	"autocreateadhoc",
-	Web_Autocreateadhoc_Id,
-	21,
-	0,  
-  },
-
-  {
-  	"powersave",
-	Web_powersave_id,
-	15,
-	0,  
-  },
-  {
-     "SsidSL",
-     Web_scan_id,
-    14,
-    0,  
-  },
-  {
-     "Encryweb",
-     Web_WebEncry_id,
-    35,
-    0,  
-  },	
-  {
-  	"AutoHiden",
-	Web_AutoHidden_Id,
-	22,
-	1,
-  }
+   {"Dns", DNS_Dns_Id, 16, 9, },
+   {"Gate", DNS_Gate_Id, 17, 8, },
+   {"Sub", Web_Sub_Id, 16, 13, },
+   {"Ip", Web_Ip_Id, 15, 10, },
+   {"Ssid", Web_Ssid_Id, 17, 4, },
+   {"Encry", Web_Encry_Id, 31, 0, },
+   {"KeyType", KeyType_Id, 15, 0, },
+   {"Dhcp", Dhcp_Id, 10, 0, },
+   {"Auto", Web_Auto_Id, 10, 0, },
+   {"Protocol", Web_Protocol_Id, 16, 0, },
+   {"Cs", Web_Cs_Id, 11, 0, },
+   {"Domain", Web_Domain_Id, 19, 11, },
+   {"Port", Web_Port_Id, 17, 5, },
+   {"Key", Web_Key_Id, 16, 0, },
+   {"KeyIndex1", Wep_KeyIndex_Id, 15, 0, },
+   {"KeyIndex2", Wep_KeyIndex2_Id, 15, 0, },
+   {"KeyIndex3", Wep_KeyIndex3_Id, 15, 0, },
+   {"KeyIndex4", Wep_KeyIndex4_Id, 15, 0, },
+   {"Mode", Web_Mode_Id, 30, 0, },
+   {"Bg", Web_Bg_Id, 10, 0, },
+   {"Rate", Web_Rate_Id, 12, 0, },
+   {"Bssid", Web_Bssid_Id, 18, 12, },
+   {"Channel", Web_Channel_Id, 15, 0, },
+   {"Ch1", Web_ChannlListCh1_Id, 19, 0, },
+   {"Ch2", Web_ChannlListCh2_Id, 19, 0, },
+   {"Ch3", Web_ChannlListCh3_Id, 19, 0, },
+   {"Ch4", Web_ChannlListCh4_Id, 19, 0, },
+   {"Ch5", Web_ChannlListCh5_Id, 19, 0, },
+   {"Ch6", Web_ChannlListCh6_Id, 19, 0, },
+   {"Ch7", Web_ChannlListCh7_Id, 19, 0, },
+   {"Ch8", Web_ChannlListCh8_Id, 19, 0, },
+   {"Ch9", Web_ChannlListCh9_Id, 19, 0, },
+   {"Ch10", Web_ChannlListCh10_Id, 20, 0, },
+   {"Ch11", Web_ChannlListCh11_Id, 20, 0, },
+   {"Ch12", Web_ChannlListCh12_Id, 20, 0, },
+   {"Ch13", Web_ChannlListCh13_Id, 20, 0, },
+   {"Ch14", Web_ChannlListCh14_Id, 20, 0, }, 
+   {"WebPort", Web_WebPort_Id, 20, 2, },
+   {"Baud", Web_Baud_Id, 12, 0, },
+   {"Check", Web_Check_Id, 13, 0, },
+   {"DataSize", Web_DataSize_Id, 16, 0, },
+   {"StopSize", Web_StopSize_Id, 16, 0, },  
+   {"EscChar", Web_EscChar_Id, 20, 2, },
+   {"EscP", Web_EscP_Id, 17, 4, },
+   {"EscDataP", Web_EscDataP_Id, 21, 3, },
+   {"EscDataL", Web_EscDataL_Id, 21, 3, },
+   {"GPIO1", Web_GPIO1_Id, 13, 0, },
+   {"CmdMode", Web_CmdMode_Id, 15, 0, },
+   {"BssidEable", Web_BssidEable_Id, 41, 0, },
+   {"PassWord", Web_PassWord_Id, 21, 6, },
+   {"TCP_TimeOut", Web_TCP_TimeOut_id, 24, 5, },
+   {"MacAdr", Web_SysInfo_Macaddr, 19, 1, },
+   {"HardVer", Web_SysInfo_HardVer, 20, 1, },
+   {"FirmVer", Web_SysInfo_FirmVer, 20, 1, },
+   {"RelTime", Web_SysInfo_RelTime, 20, 1, },
+   {"siteInfo", Web_SiteInfo_Copyright, 34, 0, },
+   {"Try_times", Web_Try_times_id, 22, 3, },
+   {"roam", Web_roam_id, 10, 0, },
+   {"DnsName", Web_DnsName_Id, 20, 1, }, 
+   {"SsidBenable", Web_SsidBroadcast_Id, 17, 0, },
+   {"autocreateadhoc", Web_Autocreateadhoc_Id, 1, 0, },
+   {"powersave", Web_powersave_id, 15, 0, },
+   {"SsidSL", Web_scan_id, 14, 0, },
+   {"Encryweb", Web_WebEncry_id, 35, 0, },
+   {"AutoHiden", Web_AutoHidden_Id, 22, 1, }
 #if 0
-  ,
-
+   ,
    NULL,
 #endif
 };
 
 #if 0
-char * Encry_Open[]={"<option value=\"0\" selected=\"selected\">Disable </option> <option value=\"1\" >WEP64</option> <option value=\"2\" >WEP128</option> <option value=\"3\">WPA-PSK(TKIP)</option> <option value=\"4\">WPA-PSK(CCMP)</option> <option value=\"5\">WPA2-PSK(TKIP)</option> <option value=\"6\">WPA2_PSK(CCMP)</option>\n", 
+char *Encry_Open[]={"<option value=\"0\" selected=\"selected\">Disable </option> <option value=\"1\" >WEP64</option> <option value=\"2\" >WEP128</option> <option value=\"3\">WPA-PSK(TKIP)</option> <option value=\"4\">WPA-PSK(CCMP)</option> <option value=\"5\">WPA2-PSK(TKIP)</option> <option value=\"6\">WPA2_PSK(CCMP)</option>\n", 
 	                             "<option value=\"0\" >Disable </option> <option value=\"1\" selected=\"selected\">WEP64</option> <option value=\"2\" >WEP128</option> <option value=\"3\">WPA-PSK(TKIP)</option> <option value=\"4\">WPA-PSK(CCMP)</option> <option value=\"5\">WPA2-PSK(TKIP)</option> <option value=\"6\">WPA2_PSK(CCMP)</option>\n",    
 	                             "<option value=\"0\" >Disable </option> <option value=\"1\" >WEP64</option> <option value=\"2\" selected=\"selected\">WEP128</option> <option value=\"3\">WPA-PSK(TKIP)</option> <option value=\"4\">WPA-PSK(CCMP)</option> <option value=\"5\">WPA2-PSK(TKIP)</option> <option value=\"6\">WPA2_PSK(CCMP)</option>\n",    
 	                             "<option value=\"0\" >Disable </option> <option value=\"1\" >WEP64</option> <option value=\"2\" >WEP128</option> <option value=\"3\"selected=\"selected\">WPA-PSK(TKIP)</option> <option value=\"4\">WPA-PSK(CCMP)</option> <option value=\"5\">WPA2-PSK(TKIP)</option> <option value=\"6\">WPA2_PSK(CCMP)</option>\n",    
@@ -528,20 +199,20 @@ char * Encry_Open[]={"<option value=\"0\" selected=\"selected\">Disable </option
 	                             "<option value=\"0\" >Disable </option> <option value=\"1\" >WEP64</option> <option value=\"2\" >WEP128</option> <option value=\"3\">WPA-PSK(TKIP)</option> <option value=\"4\">WPA-PSK(CCMP)</option> <option value=\"5\">WPA2-PSK(TKIP)</option> <option value=\"6\"selected=\"selected\">WPA2_PSK(CCMP)</option>\n"    
 	                             };
 #endif
-//char * Encry_Open[]={"whet", "WEP64", "WEP128", "WPA-PSK(TKIP)", "are(CCMP)", "WPA2-PSK(TKIP)", "you(CCMP)"};
+//char *Encry_Open[]={"whet", "WEP64", "WEP128", "WPA-PSK(TKIP)", "are(CCMP)", "WPA2-PSK(TKIP)", "you(CCMP)"};
 
 #if WEB_SERVER_RUSSIAN
 extern int gCurHtmlFile;
-char * Web_Mode[]={"<option value=\"0\" selected=\"selected\">Station (end-point)</option> <option value=\"1\">Ad hoc network</option> <option value=\"2\">Access Point</option>\n", 
+char *Web_Mode[]={"<option value=\"0\" selected=\"selected\">Station (end-point)</option> <option value=\"1\">Ad hoc network</option> <option value=\"2\">Access Point</option>\n", 
 					"<option value=\"0\" >Station (end-point)</option> <option value=\"1\" selected=\"selected\">Ad hoc network</option> <option value=\"2\">Access Point</option>\n",    
 					"<option value=\"0\" >Station (end-point)</option> <option value=\"1\">Ad hoc network</option> <option value=\"2\" selected=\"selected\">Access Point</option>\n",
-					"<option value=\"0\" selected=\"selected\">������</option> <option value=\"1\">Ad hoc ����</option> <option value=\"2\">����?������?/option>\n",
-					"<option value=\"0\" >������</option> <option value=\"1\" selected=\"selected\">Ad hoc ����</option> <option value=\"2\">����?������?/option>\n",
-					"<option value=\"0\" >������</option> <option value=\"1\">Ad hoc ����</option> <option value=\"2\" selected=\"selected\">����?������?/option>\n"
+					"<option value=\"0\" selected=\"selected\">Êëèåíò</option> <option value=\"1\">Ad hoc ñåòè</option> <option value=\"2\">Òî÷ê?äîñòóï?/option>\n",
+					"<option value=\"0\" >Êëèåíò</option> <option value=\"1\" selected=\"selected\">Ad hoc ñåòè</option> <option value=\"2\">Òî÷ê?äîñòóï?/option>\n",
+					"<option value=\"0\" >Êëèåíò</option> <option value=\"1\">Ad hoc ñåòè</option> <option value=\"2\" selected=\"selected\">Òî÷ê?äîñòóï?/option>\n"
 };
 #else
 /*
-char * Web_Mode[]={"<option value=\"0\" selected=\"selected\">Sta</option> <option value=\"1\">Adhoc</option> <option value=\"2\">AP</option>\n",
+char *Web_Mode[]={"<option value=\"0\" selected=\"selected\">Sta</option> <option value=\"1\">Adhoc</option> <option value=\"2\">AP</option>\n",
 					"<option value=\"0\" >Sta</option> <option value=\"1\" selected=\"selected\">Adhoc</option> <option value=\"2\">AP</option>\n",
 					"<option value=\"0\" >Sta</option> <option value=\"1\" >Adhoc</option> <option value=\"2\" selected=\"selected\">AP</option>\n"
 					};
@@ -586,7 +257,7 @@ char * able_type[]={"> <option value=\"0\" selected=\"selected\">Disable</option
 
 char * Key_Index[]={"checked=\"checked\" />\n",
 					"/>\n"};
-*/					
+*/
 /*-----------------------------------------------------------------------------------
 // Description:   Read one line text into buffer s, and return its length 
 // Parameters:  file:
@@ -605,27 +276,25 @@ void scan_result_cb(void)
     scan_done = 1;
 }
 
-u16  Web_parse_line(char * id_char,u16 * after_id_len,char * idvalue,u16 * Value_Offset,u8 * Id_type)
+u16  Web_parse_line(char *id_char, u16 *after_id_len, char *idvalue, u16 *Value_Offset, u8 *Id_type)
 {
     /*
 	char idbuffer[MAX_ID_BUFFER_LEN];
 	u8 j=0, mode, encrypt;
 	ID_VALUE  *idtble;
 	u8 tableid=0;
-	struct tls_param_ip ip_param;
 	short channellist;
-	struct tls_param_key param_key;
 	u8 auto_mode;
 	struct tls_param_socket remote_socket_cfg;
 	struct tls_param_bssid bssid;
 	struct tls_param_uart uart_cfg;
 	*/
-	char idbuffer[MAX_ID_BUFFER_LEN];
-	u8 j=0, mode;//, encrypt;
-	ID_VALUE  *idtble;
-	u8 tableid=0;
+    char idbuffer[MAX_ID_BUFFER_LEN];
+    u8 j=0, mode;//, encrypt;
+    ID_VALUE  *idtble;
+    u8 tableid=0;
     struct tls_param_ip ip_param;
-	struct tls_param_key param_key;
+    struct tls_param_key param_key;
     int k;
 
 	memset(idbuffer,0,MAX_ID_BUFFER_LEN);
@@ -838,7 +507,7 @@ u16  Web_parse_line(char * id_char,u16 * after_id_len,char * idvalue,u16 * Value
 		           		bss_info->ssid[bss_info->ssid_len] = '\0';
 	                    DEBUG_PRINT("illegal: %d, %s\r\n", bss_info->ssid_len, bss_info->ssid);
 	                }
-	                bss_info ++;				
+	                bss_info++;
 	            }
 
 	            if( bssBuff != NULL ) {
@@ -848,8 +517,8 @@ u16  Web_parse_line(char * id_char,u16 * after_id_len,char * idvalue,u16 * Value
 			}
             
     		*after_id_len = idtble->Idlen-4;
-    		*Value_Offset = idtble->Value_Offset;		
-    		*Id_type = 0x01;		
+    		*Value_Offset = idtble->Value_Offset;
+    		*Id_type = 0x01;
 	    }
 	    
 		break;
@@ -925,30 +594,30 @@ u16  Web_parse_line(char * id_char,u16 * after_id_len,char * idvalue,u16 * Value
 				if (param_key.psk[i] == '\"')
 				{
 					/*&#34;*/
-					*(idvalue + j) = '&';				
+					*(idvalue + j) = '&';
 					j++;
-					*(idvalue + j) = '#';				
+					*(idvalue + j) = '#';
 					j++;
-					*(idvalue + j) = '3';				
+					*(idvalue + j) = '3';
 					j++;
 					*(idvalue + j) = '4';
 					j++;
-					*(idvalue + j) = ';';				
+					*(idvalue + j) = ';';
 					j++;
 				}
 				else if (param_key.psk[i] == '\'')
 				{
 					/*&#34;*/
-					*(idvalue + j) = '&';				
+					*(idvalue + j) = '&';
 					j++;
-					*(idvalue + j) = '#';				
+					*(idvalue + j) = '#';
 					j++;
-					*(idvalue + j) = '3';				
+					*(idvalue + j) = '3';
 					j++;
 					*(idvalue + j) = '9';
 					j++;
-					*(idvalue + j) = ';';				
-					j++;	
+					*(idvalue + j) = ';';
+					j++;
 				}
 				else
 				{
@@ -957,7 +626,7 @@ u16  Web_parse_line(char * id_char,u16 * after_id_len,char * idvalue,u16 * Value
 				}
 			}
 			
-			//sprintf(idvalue, "%s",  param_key.psk);	
+			//sprintf(idvalue, "%s",  param_key.psk);
 			//idvalue[param_key.key_length] = '\0';
 			idvalue[j] = '\0';
 			*after_id_len=idtble->Idlen;
@@ -1021,7 +690,7 @@ u16  Web_parse_line(char * id_char,u16 * after_id_len,char * idvalue,u16 * Value
 		}
 #else
 		{
-			sprintf(idvalue, "onclick=\"auto()\" value=\"%d\" %s />   Զģʽ</label></td>\n",\
+			sprintf(idvalue, "onclick=\"auto()\" value=\"%d\" %s />   Ô¶Ä£Ê½</label></td>\n",\
 				(!auto_mode), \
 				(!auto_mode) ? Web_null : Web_checked); 
 		}
@@ -1143,11 +812,11 @@ u16  Web_parse_line(char * id_char,u16 * after_id_len,char * idvalue,u16 * Value
 		{
 			sprintf(idvalue, "%s\" disabled=\"disabled\" ",  "0.0.0.0");
 			*after_id_len=idtble->Idlen;
-			*Value_Offset=idtble->Value_Offset+1;	
+			*Value_Offset=idtble->Value_Offset+1;
 		}
 		*/
 
-		break;		
+		break;
 	case Web_Port_Id:
         /*
     	tls_param_get(TLS_PARAM_ID_DEFSOCKET, &remote_socket_cfg, FALSE);
@@ -1166,7 +835,7 @@ u16  Web_parse_line(char * id_char,u16 * after_id_len,char * idvalue,u16 * Value
 		}
 		*/
 
-		break;	
+		break;
 	case Wep_KeyIndex_Id:
         /*
 		tls_param_get(TLS_PARAM_ID_WPROTOCOL, (void* )&mode, FALSE);
@@ -1273,7 +942,7 @@ u16  Web_parse_line(char * id_char,u16 * after_id_len,char * idvalue,u16 * Value
 		*Value_Offset=idtble->Value_Offset;
 		* Id_type=0x01;	
 		*/
-		break;		
+		break;
 	case Web_Mode_Id:
         /*
 		tls_param_get(TLS_PARAM_ID_WPROTOCOL, (void* )&mode, FALSE);
@@ -1787,15 +1456,15 @@ u16  Web_parse_line(char * id_char,u16 * after_id_len,char * idvalue,u16 * Value
 	case Web_GPIO1_Id:
 		  if(pSysVal->CfgPara.IOMode==0)
 		  {
-			strcpy(idvalue,"<option value=\"0\" selected=\"selected\">ϵͳ����</option> <option value=\"1\">����</option> <option value=\"2\">���</option>\n");		
+			strcpy(idvalue,"<option value=\"0\" selected=\"selected\">ÏµÍ³¹¦ÄÜ</option> <option value=\"1\">ÊäÈë</option> <option value=\"2\">Êä³ö</option>\n");		
 		  }
 		  else if(pSysVal->CfgPara.IOMode==1)
 		  {
-			strcpy(idvalue,"<option value=\"0\" >ϵͳ����</option> <option value=\"1\" selected=\"selected\">����</option> <option value=\"2\">���</option>\n");	
+			strcpy(idvalue,"<option value=\"0\" >ÏµÍ³¹¦ÄÜ</option> <option value=\"1\" selected=\"selected\">ÊäÈë</option> <option value=\"2\">Êä³ö</option>\n");	
 		  }
 		  else
 		  {
-			strcpy(idvalue,"<option value=\"0\" >ϵͳ����</option> <option value=\"1\" >����</option> <option value=\"2\" selected=\"selected\">���</option>\n");		
+			strcpy(idvalue,"<option value=\"0\" >ÏµÍ³¹¦ÄÜ</option> <option value=\"1\" >ÊäÈë</option> <option value=\"2\" selected=\"selected\">Êä³ö</option>\n");		
 		  }
 		*after_id_len=idtble->Idlen;
 		*Value_Offset=idtble->Value_Offset;
@@ -1804,11 +1473,11 @@ u16  Web_parse_line(char * id_char,u16 * after_id_len,char * idvalue,u16 * Value
 	case Web_CmdMode_Id:
 		  if(pSysVal->CfgPara.CmdMode==0)
 		  {
-			strcpy(idvalue,"<option value=\"0\" selected=\"selected\">AT+ָ�ģʽ</option> <option value=\"1\">����Э��ģʽ</option>\n");		
+			strcpy(idvalue,"<option value=\"0\" selected=\"selected\">AT+Ö¸Áî¼¯Ä£Ê½</option> <option value=\"1\">¼æÈÝÐ­ÒéÄ£Ê½</option>\n");		
 		  }
 		  else 
 		  {
-		       strcpy(idvalue,"<option value=\"0\" >AT+ָ�ģʽ</option> <option value=\"1\" selected=\"selected\">����Э��ģʽ</option>\n");  	
+		       strcpy(idvalue,"<option value=\"0\" >AT+Ö¸Áî¼¯Ä£Ê½</option> <option value=\"1\" selected=\"selected\">¼æÈÝÐ­ÒéÄ£Ê½</option>\n");  	
 		  }
 		*after_id_len=idtble->Idlen;
 		*Value_Offset=idtble->Value_Offset;
@@ -2161,16 +1830,15 @@ u16  Web_parse_line(char * id_char,u16 * after_id_len,char * idvalue,u16 * Value
 }
 
 
-
 char *Res[] = {"/basic.html",  
-			"/advance.html",	
-			"/firmware.html",	
-			"/index.html",	
-#if WEB_SERVER_RUSSIAN		
-			"/basic_en.html",	
-			"/basic_ru.html",	
-			"/firmware_en.html",
-			"/firmware_ru.html",
+            "/advance.html",
+            "/firmware.html",
+            "/index.html",
+#if WEB_SERVER_RUSSIAN
+            "/basic_en.html",
+            "/basic_ru.html",
+            "/firmware_en.html",
+            "/firmware_ru.html",
 #endif
 };
 static int HtmlConvertURLStr(char *drc, char *src, int len)
@@ -2211,10 +1879,7 @@ static int HtmlConvertURLStr(char *drc, char *src, int len)
 	return 0;
 }
 
-#define CGI_CONFIG MK_CGI_ENTRY( \
-	"/basic.html", \
-	do_cgi_config \
-	)
+#define CGI_CONFIG MK_CGI_ENTRY("/basic.html", do_cgi_config)
 
 /*
 static void set_default_socket(struct tls_param_socket *remote_socket_cfg)
@@ -2238,25 +1903,20 @@ static void set_default_socket(struct tls_param_socket *remote_socket_cfg)
 extern u8 gucssidData[33];
 extern u8 gucpwdData[65];
 
-char * do_cgi_config(int iIndex, int iNumParams, char *pcParam[], char *pcValue[],u8 *  NeedRestart)
+char *do_cgi_config(int iIndex, int iNumParams, char *pcParam[], char *pcValue[],u8 *NeedRestart)
 {
     /*
-	int i;
-	int Value;
-///	int EnableAutoMode = 0;
-	u32 Ip;
-	int KeyType = 0;
-	int KeyLen = 0;
-	u8 encrypt;
-	struct tls_param_ip ip_param;
-	struct tls_param_key param_key;
-	struct tls_param_original_key* orig_key;
-	struct tls_param_sha1* sha1_key;
-	u8 auto_mode;
-	u8 mode;
-	struct tls_param_socket remote_socket_cfg;
-	*/
-	
+    int Value;
+    int EnableAutoMode = 0;
+    u32 Ip;
+    int KeyType = 0;
+    u8 encrypt;
+    struct tls_param_ip ip_param;
+    u8 auto_mode;
+    u8 mode;
+    struct tls_param_socket remote_socket_cfg;
+    */
+
 	int i;
 	int KeyLen = 0;
     
@@ -2825,7 +2485,7 @@ char * do_cgi_advance(int iIndex, int iNumParams, char *pcParam[], char *pcValue
 	do_cgi_firmware \
 	)
 
-char * do_cgi_firmware(int iIndex, int iNumParams, char *pcParam[], char *pcValue[], u8 * NeedRestart)
+char *do_cgi_firmware(int iIndex, int iNumParams, char *pcParam[], char *pcValue[], u8 * NeedRestart)
 {
 	//int i;
 
@@ -2853,97 +2513,98 @@ char * do_cgi_firmware(int iIndex, int iNumParams, char *pcParam[], char *pcValu
 	
 	return Res[iIndex];
 }
-
-char * do_cgi_webindex(int iIndex, int iNumParams, char *pcParam[], char *pcValue[], u8 * NeedRestart)
+/**
+ * index.html route
+ * обработчик представлен как CGI, хотя вроде бы он статический
+ */
+char *do_cgi_webindex(int iIndex, int iNumParams, char *pcParam[], char *pcValue[], u8 *NeedRestart)
 {
-		int i;
-		int Value;
-		//int KeyLen = 0;	
-		u8 encrypt;
-		//struct tls_param_key param_key;
-		if (iNumParams == 0)
-		{
-			* NeedRestart=0;
-			return Res[iIndex];
-		}
-		for (i = 0; i < iNumParams - 1; i++)		//not care about "Save"
-		{
-			if (pcParam[i] == NULL || pcValue[i] == NULL || *pcValue[i] == '\0')
-			{
-				continue;
-			}
-    		 if (strcmp(pcParam[i], "SsidSL") == 0)
-    		{
-			struct tls_param_ssid ssid;
-			memset(&ssid, 0, sizeof(struct tls_param_ssid));
-			HtmlConvertURLStr((char *)ssid.ssid, pcValue[i], strlen(pcValue[i]));
-			ssid.ssid_len = strlen(pcValue[i]);
-			tls_param_set(TLS_PARAM_ID_SSID, (void *)&ssid, FALSE);
-    		} 
-     		else if (strcmp(pcParam[i], "Encryweb") == 0)
-     		{
-			tls_param_get(TLS_PARAM_ID_ENCRY, (void *)&encrypt, FALSE);
-     			strtodec(&Value, pcValue[i]);
-     			if(Value==0)  ///open
-     			{
-     				encrypt=ENCRYPT_TYPE_OPEN_SYS;
-     				//pSysVal->CfgPara.AuthMode=0;
-     			}
-     			else if(Value==1)///
-     			{
-     				encrypt=ENCRYPT_TYPE_WEP_64_BITS;
-     				//pSysVal->CfgPara.AuthMode=0;		
-     			}
-     			else if(Value==2)///
-     			{
-     				encrypt=ENCRYPT_TYPE_WEP_128_BITS;
-     				//pSysVal->CfgPara.AuthMode=0;		
-     			}	
-#if 0
-     			else if(Value==3)///
-     			{
-     				encrypt=ENCRYPT_TYPE_TKIP;
-     				pSysVal->CfgPara.AuthMode=AUTHMODE_WPA;		
-     			}	
-     			else if(Value==4)///
-     			{
-     				encrypt=ENCRYPT_TYPE_CCMP;
-     				pSysVal->CfgPara.AuthMode=AUTHMODE_WPA;		
-     			}				
-     			else if(Value==5)///
-     			{
-     				encrypt=ENCRYPT_TYPE_TKIP;
-     				pSysVal->CfgPara.AuthMode=AUTHMODE_WPA2;		
-     			}				
-     			else if(Value==6)///
-     			{
-     				encrypt=ENCRYPT_TYPE_CCMP;
-     				pSysVal->CfgPara.AuthMode=AUTHMODE_WPA2;		
-     			}	
+    int i;
+    int Value;
+    //int KeyLen = 0;
+    u8 encrypt;
+    //struct tls_param_key param_key;
+    if (iNumParams == 0)
+    {
+        *NeedRestart=0;
+        return Res[iIndex];     // строка, имя html файла (в данном случае "index.html")
+    }
+    for (i = 0; i < iNumParams - 1; i++) //not care about "Save"
+    {
+        if (pcParam[i] == NULL || pcValue[i] == NULL || *pcValue[i] == '\0')
+        {
+            continue;
+        }
+        if (strcmp(pcParam[i], "SsidSL") == 0)
+        {
+            struct tls_param_ssid ssid;
+            memset(&ssid, 0, sizeof(struct tls_param_ssid));
+            HtmlConvertURLStr((char *)ssid.ssid, pcValue[i], strlen(pcValue[i]));
+            ssid.ssid_len = strlen(pcValue[i]);
+            tls_param_set(TLS_PARAM_ID_SSID, (void *)&ssid, FALSE);
+        } 
+        else if (strcmp(pcParam[i], "Encryweb") == 0)
+        {
+            tls_param_get(TLS_PARAM_ID_ENCRY, (void *)&encrypt, FALSE);
+            strtodec(&Value, pcValue[i]);
+            if(Value==0)  //open
+            {
+                encrypt=ENCRYPT_TYPE_OPEN_SYS;
+                //pSysVal->CfgPara.AuthMode=0;
+            }
+            else if(Value==1)
+            {
+                encrypt=ENCRYPT_TYPE_WEP_64_BITS;
+                //pSysVal->CfgPara.AuthMode=0;
+            }
+            else if(Value==2)
+            {
+                encrypt=ENCRYPT_TYPE_WEP_128_BITS;
+                //pSysVal->CfgPara.AuthMode=0;
+            }
+#if 0 // разобраться с константами и pSysVal (нужен ли он?)
+            else if(Value==3)/// WPA/TKIP
+            {
+                encrypt=ENCRYPT_TYPE_TKIP;
+                pSysVal->CfgPara.AuthMode=AUTHMODE_WPA;
+            }
+            else if(Value==4)/// WPA/CCMP
+            {
+                encrypt=ENCRYPT_TYPE_CCMP;
+                pSysVal->CfgPara.AuthMode=AUTHMODE_WPA;
+            }
+            else if(Value==5)/// WPA2/TKIP
+            {
+                encrypt=ENCRYPT_TYPE_TKIP;
+                pSysVal->CfgPara.AuthMode=AUTHMODE_WPA2;
+            }
+            else if(Value==6)/// WPA2/CCMP
+            {
+                encrypt=ENCRYPT_TYPE_CCMP;
+                pSysVal->CfgPara.AuthMode=AUTHMODE_WPA2;
+            }
 #endif
-     			else
-     			{
-     
-     			}
-			tls_param_set(TLS_PARAM_ID_ENCRY, (void *)&encrypt, FALSE);
-     		}
-			else if(strcmp(pcParam[i], "ApEnableweb") == 0)
-		    {
-			    //strtodec(&Value, pcValue[i]);
-			    u8 mode= 0;	// 1
-			    tls_param_get(TLS_PARAM_ID_WPROTOCOL, (void* )&mode, FALSE);
-		    }	
-		}			
-		tls_param_to_flash(TLS_PARAM_ID_ALL);
-		* NeedRestart=1;	
-		return Res[iIndex];
-
+            else
+            {
+                /// unknown method
+            }
+            tls_param_set(TLS_PARAM_ID_ENCRY, (void *)&encrypt, FALSE); // TLS_PARAM_ID_ENCRY почему-то не может быть новее чем WEP
+                                                                        // возможно, потому что отключена возможность сохранять этот параметр
+        }
+        else if(strcmp(pcParam[i], "ApEnableweb") == 0)
+        {
+            //strtodec(&Value, pcValue[i]);
+            u8 mode = 0;     // 1
+            tls_param_get(TLS_PARAM_ID_WPROTOCOL, (void* )&mode, FALSE);
+        }
+    }
+    tls_param_to_flash(TLS_PARAM_ID_ALL);
+    *NeedRestart=1;
+    return Res[iIndex];
 }
 
-#define CGI_WEBINDEX MK_CGI_ENTRY( \
-	"/index.html", \
-	do_cgi_webindex \
-	)
+#define CGI_WEBINDEX MK_CGI_ENTRY("/index.html", do_cgi_webindex)
+
 #if WEB_SERVER_RUSSIAN
 #define CGI_CONFIG_EN MK_CGI_ENTRY( \
 	"/basic_en.html", \
@@ -2960,20 +2621,19 @@ char * do_cgi_webindex(int iIndex, int iNumParams, char *pcParam[], char *pcValu
 #define CGI_FIRMWARE_RU MK_CGI_ENTRY( \
 	"/firmware_ru.html", \
 	do_cgi_firmware \
-	)	
-#endif		
+	)
+#endif
 
 tCGI Cgi[8]= 
 {
 	CGI_CONFIG,
 	CGI_ADVANCE,
 	CGI_CONTROL,
-	CGI_WEBINDEX,	
-#if WEB_SERVER_RUSSIAN	
+	CGI_WEBINDEX,
+#if WEB_SERVER_RUSSIAN
 	CGI_CONFIG_EN,
 	CGI_CONFIG_RU,
 	CGI_FIRMWARE_EN,
 	CGI_FIRMWARE_RU,
-#endif	
+#endif
 };
-

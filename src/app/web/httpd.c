@@ -1067,28 +1067,27 @@ static void resethandler()
     }
 }
 
- u8   extract_html_recive(char * html_data,  struct http_state *hs,struct tcp_pcb *pcb)
- {
-   int i;
-   int loop;
-   struct fs_file *file;
-  // int UrlBufSize = HTTP_MAX_REQUEST_LEN;
-   ///char Url[HTTP_MAX_REQUEST_LEN];
-   char * Url=NULL;
-  #ifdef INCLUDE_HTTPD_CGI
+u8 extract_html_recive(char * html_data,  struct http_state *hs,struct tcp_pcb *pcb)
+{
+    int i;
+    int loop;
+    struct fs_file *file;
+    // int UrlBufSize = HTTP_MAX_REQUEST_LEN;
+    //char Url[HTTP_MAX_REQUEST_LEN];
+    char * Url=NULL;
+#ifdef INCLUDE_HTTPD_CGI
   int count;
   char *params;
   #endif
 #if WEB_SERVER_AUTHEN
   char * AuthChar=NULL;
 #endif
-  u8 NeedRestart=0;
+    u8 NeedRestart=0;
     u8 mode;
 
-	
 	if (strncmp(html_data, "GET ", 4) == 0) 
 	{
-		DEBUG_PRINT("extract_html_recive GET start");
+		DEBUG_PRINT("extract_html_recive GET start\n");
 #if WEB_SERVER_AUTHEN
 	    AuthChar= strstr(html_data,"Authorization:");
 
@@ -1096,8 +1095,8 @@ static void resethandler()
 	    {
 	    	 tcp_write(pcb,(char *)GpucHttpHead_Authen, strlen(GpucHttpHead_Authen), TCP_WRITE_FLAG_COPY);
 		 tcp_sent(pcb, http_sent);
-	        tcp_output(pcb);	 
-		 close_conn(pcb, hs);	   
+	        tcp_output(pcb);
+		 close_conn(pcb, hs);
 		return 0;
 	    }
 	    else
@@ -1107,19 +1106,19 @@ static void resethandler()
 	    	decodeBase64(AuthChar+sizeof("Authorization: Basic"));
 		if(strncmp((char *)AuthChar+sizeof("Authorization: Basic"),"admin:",6)==0&&strncmp((char *)AuthChar+sizeof("Authorization: Basic admin"),(char *)SysSuperPass,6)==0)
 		{
-			DEBUG_PRINT("PassWord is SysSuperPass\n\r" );	
-		}	
+			DEBUG_PRINT("PassWord is SysSuperPass\n\r" );
+		}
 		else if(strncmp((char *)AuthChar+sizeof("Authorization: Basic"),"admin:",6)!=0||strncmp((char *)AuthChar+sizeof("Authorization: Basic admin"),(char *)password,6)!=0)
 		{
 			DEBUG_PRINT("PassWord is Error \n\r" );
 	    	 	tcp_write(pcb,(char *)GpucHttpHead_Authen, strlen(GpucHttpHead_Authen), TCP_WRITE_FLAG_COPY);
 		 	tcp_sent(pcb, http_sent);
-	        	tcp_output(pcb);		
-		       close_conn(pcb, hs);	   
+	        	tcp_output(pcb);
+		       close_conn(pcb, hs);
 			return 0;
-		}	
-	    }
-#endif		
+		}
+    }
+#endif
         /*
          * We have a GET request. Find the end of the URI by looking for the
          * HTTP marker. We can't just use strstr to find this since the request
@@ -1455,137 +1454,124 @@ http_recv(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err_t err)
     struct http_state *hs;
     char * temprecive=NULL;
     char * HtmlBegin=NULL, *HtmlEnd=NULL;
-    int HtmlLen;		
+    int HtmlLen;
 
 //  DEBUG_PRINT("http_recv 0x%08x\n", pcb);
+//  memset(Url, 0, HTTP_MAX_REQUEST_LEN);
+    hs = arg;
 
- // memset(Url, 0, HTTP_MAX_REQUEST_LEN);
-  hs = arg;
+    if (err == ERR_OK && p != NULL) {
+        /* Inform TCP that we have taken the data. */
+        tcp_recved(pcb, p->tot_len);
+        if (hs->recv_state == 2){
+            hs->recv_content_len -= p->tot_len;
+            if (hs->RecvPbuf == NULL){
+                hs->RecvPbuf = p;
+                hs->RecvOffset = 0;
+            }
+            else{
+                pbuf_cat(hs->RecvPbuf, p);
+            }
+            send_data_to_sys(hs);
+            return ERR_OK;
+        }
 
-  if (err == ERR_OK && p != NULL) {
+        if (hs->handle == NULL) {
+//          data = p->payload;
+            if (hs->http_recive_request.Valid){
+                temprecive = mem_malloc(hs->http_recive_request.charlen);
+                if (NULL == temprecive){
+                    if (hs->http_recive_request.Httpd_recive_buf){
+                        mem_free(hs->http_recive_request.Httpd_recive_buf);
+                        hs->http_recive_request.Httpd_recive_buf = NULL;
+                    }
+                    hs->http_recive_request.charlen=0;
+                    hs->http_recive_request.Valid=0;
+                    hs->http_recive_request.PreBuf=NULL;
+                    DEBUG_PRINT("http_recv 00pbuf:0x%x\r\n", (u32)p);
+                    pbuf_free(p);
+                    close_conn(pcb, hs);
+                    return ERR_OK;
+                }
+                if (hs->http_recive_request.Httpd_recive_buf&&hs->http_recive_request.charlen){
+                    memcpy(temprecive,hs->http_recive_request.Httpd_recive_buf, hs->http_recive_request.charlen);
+                }
+            }
 
-    /* Inform TCP that we have taken the data. */
-    tcp_recved(pcb, p->tot_len);
+            if (hs->http_recive_request.Httpd_recive_buf){
+                mem_free(hs->http_recive_request.Httpd_recive_buf);
+                hs->http_recive_request.Httpd_recive_buf = NULL;
+            }
 
-    if (hs->recv_state == 2){
+            hs->http_recive_request.Httpd_recive_buf=mem_malloc( p->tot_len+hs->http_recive_request.charlen);
+            if(hs->http_recive_request.Httpd_recive_buf==NULL)
+            {
+                DEBUG_PRINT("Httpd Recive Buf Error pbuf:%x\n\r", p);
+                hs->http_recive_request.charlen=0;
+                hs->http_recive_request.Valid=0;
+                hs->http_recive_request.PreBuf=NULL;
+                pbuf_free(p);
+                close_conn(pcb, hs);
+                return ERR_OK;
+            }
 
-	hs->recv_content_len -= p->tot_len;
+            memset(hs->http_recive_request.Httpd_recive_buf,0, p->tot_len+hs->http_recive_request.charlen);
+            if(hs->http_recive_request.Valid==1)
+            {
+                if (temprecive){
+                    memcpy(hs->http_recive_request.Httpd_recive_buf,temprecive,hs->http_recive_request.charlen);
+                    mem_free(temprecive);
+                    temprecive = NULL;
+                }
+            }
 
-	if (hs->RecvPbuf == NULL){
-		hs->RecvPbuf = p;
-		hs->RecvOffset = 0;
-	}
-	else{
-		pbuf_cat(hs->RecvPbuf, p);
-	}
-
-       send_data_to_sys(hs);
-	   
-	   return ERR_OK;
-    }
-
-    if (hs->handle == NULL) {
-//      data = p->payload;
-		if (hs->http_recive_request.Valid){
-			temprecive = mem_malloc(hs->http_recive_request.charlen);
-			if (NULL == temprecive){
-				if (hs->http_recive_request.Httpd_recive_buf){
-					mem_free(hs->http_recive_request.Httpd_recive_buf);
-					hs->http_recive_request.Httpd_recive_buf = NULL;
-				}
-				hs->http_recive_request.charlen=0;
-				hs->http_recive_request.Valid=0;
-				hs->http_recive_request.PreBuf=NULL;
-				DEBUG_PRINT("http_recv 00pbuf:0x%x\r\n", (u32)p);
-				pbuf_free(p);
-		    	close_conn(pcb, hs);
-		  		return ERR_OK;	
-			}
-			if (hs->http_recive_request.Httpd_recive_buf&&hs->http_recive_request.charlen){
-				memcpy(temprecive,hs->http_recive_request.Httpd_recive_buf, hs->http_recive_request.charlen);
-	    	}
-		}
-
-		if (hs->http_recive_request.Httpd_recive_buf){
-			mem_free(hs->http_recive_request.Httpd_recive_buf);
-			hs->http_recive_request.Httpd_recive_buf = NULL;
-		}
-
-		hs->http_recive_request.Httpd_recive_buf=mem_malloc( p->tot_len+hs->http_recive_request.charlen);
-		if(hs->http_recive_request.Httpd_recive_buf==NULL)
-		{
-			DEBUG_PRINT("Httpd Recive Buf Error pbuf:%x\n\r", p);
-			hs->http_recive_request.charlen=0;
-			hs->http_recive_request.Valid=0;
-			hs->http_recive_request.PreBuf=NULL;
-			pbuf_free(p);
-			close_conn(pcb, hs);
-	  		return ERR_OK;		
-		}		
-
-		memset(hs->http_recive_request.Httpd_recive_buf,0, p->tot_len+hs->http_recive_request.charlen);
-		
-		if(hs->http_recive_request.Valid==1)
-		{
-			if (temprecive){
-				memcpy(hs->http_recive_request.Httpd_recive_buf,temprecive,hs->http_recive_request.charlen);
-				mem_free(temprecive);
-				temprecive = NULL;
-			}
-		}
-
-		pbuf_copy_partial(p,hs->http_recive_request.Httpd_recive_buf+hs->http_recive_request.charlen, p->tot_len, 0);	
-		hs->http_recive_request.charlen +=p->tot_len;
-		DEBUG_PRINT("####http_recv pbuf:%x\r\n", p);
-		pbuf_free(p);
-		hs->http_recive_request.Valid=1;	
-		DEBUG_PRINT(hs->http_recive_request.Httpd_recive_buf);
-		HtmlLen = 0;
-		HtmlBegin = hs->http_recive_request.Httpd_recive_buf;
-		do{
-			HtmlBegin += HtmlLen;
-			if (hs->recv_state != 2){
-			    HtmlEnd = strstr(HtmlBegin, "\r\n\r\n"); 
-			    if(HtmlEnd){
-			             HtmlEnd += 4;
-				HtmlLen = (int)(HtmlEnd - HtmlBegin)	;	 
-					extract_html_recive(HtmlBegin,hs,pcb);
-				hs->http_recive_request.charlen -= HtmlLen;
-				if (hs->recv_state == 1){
-					hs->recv_content_len -= HtmlLen;	
-				}
-				
-				if (hs->http_recive_request.charlen <= 0){
-			  		mem_free(hs->http_recive_request.Httpd_recive_buf);
-			  		hs->http_recive_request.charlen=0;
-			  		hs->http_recive_request.Httpd_recive_buf=NULL;
-			  		hs->http_recive_request.Valid=0;
-				}	
-		     } 
-	     }
-	     else{
-		HtmlLen = hs->http_recive_request.charlen;
-		hs->RecvPbuf = pbuf_alloc(PBUF_TRANSPORT, HtmlLen, PBUF_RAM);
-		if (hs->RecvPbuf == NULL){
-			DEBUG_PRINT("http_recv recvpBuf\r\n");
-
-			return 0;
-		}
-		pbuf_take(hs->RecvPbuf, HtmlBegin, HtmlLen);	
-		hs->RecvOffset = 0;
-		
-  		mem_free(hs->http_recive_request.Httpd_recive_buf);
-  		hs->http_recive_request.charlen=0;
-  		hs->http_recive_request.Httpd_recive_buf=NULL;
-  		hs->http_recive_request.Valid=0;
-
-		hs->recv_content_len -= HtmlLen;
-	     }	 
-	}while((HtmlEnd) && (hs->http_recive_request.charlen > 0));
-
+            pbuf_copy_partial(p,hs->http_recive_request.Httpd_recive_buf+hs->http_recive_request.charlen, p->tot_len, 0);
+            hs->http_recive_request.charlen +=p->tot_len;
+            DEBUG_PRINT("####http_recv pbuf:%x\r\n", p);
+            pbuf_free(p);
+            hs->http_recive_request.Valid=1;
+            DEBUG_PRINT(hs->http_recive_request.Httpd_recive_buf);
+            HtmlLen = 0;
+            HtmlBegin = hs->http_recive_request.Httpd_recive_buf;
+            do{
+                HtmlBegin += HtmlLen;
+                if (hs->recv_state != 2){
+                    HtmlEnd = strstr(HtmlBegin, "\r\n\r\n"); 
+                    if(HtmlEnd){
+                    HtmlEnd += 4;
+                    HtmlLen = (int)(HtmlEnd - HtmlBegin);
+                    extract_html_recive(HtmlBegin,hs,pcb);
+                    hs->http_recive_request.charlen -= HtmlLen;
+                    if(hs->recv_state == 1){
+                        hs->recv_content_len -= HtmlLen;
+                    }
+                    if (hs->http_recive_request.charlen <= 0){
+                        mem_free(hs->http_recive_request.Httpd_recive_buf);
+                        hs->http_recive_request.charlen=0;
+                        hs->http_recive_request.Httpd_recive_buf=NULL;
+                        hs->http_recive_request.Valid=0;
+                    }
+                }
+            }
+            else{
+                HtmlLen = hs->http_recive_request.charlen;
+                hs->RecvPbuf = pbuf_alloc(PBUF_TRANSPORT, HtmlLen, PBUF_RAM);
+                if (hs->RecvPbuf == NULL){
+                    DEBUG_PRINT("http_recv recvpBuf\r\n");
+                    return 0;
+                }
+                pbuf_take(hs->RecvPbuf, HtmlBegin, HtmlLen);
+                hs->RecvOffset = 0;
+                mem_free(hs->http_recive_request.Httpd_recive_buf);
+                hs->http_recive_request.charlen=0;
+                hs->http_recive_request.Httpd_recive_buf=NULL;
+                hs->http_recive_request.Valid=0;
+                hs->recv_content_len -= HtmlLen;
+            }
+        }while((HtmlEnd) && (hs->http_recive_request.charlen > 0));
     } 
-	else {
-      	pbuf_free(p);
+    else {
+        pbuf_free(p);
     }
   }
 
