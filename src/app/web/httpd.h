@@ -40,7 +40,7 @@
 #define FWEND_FLAG_LEN 7	//(strlen("\r\n-----"))
 
 
-//#define INCLUDE_HTTPD_DEBUG
+#define INCLUDE_HTTPD_DEBUG
 
 
 #ifdef INCLUDE_HTTPD_DEBUG

@@ -1,16 +1,16 @@
-/***************************************************************************** 
-* 
+/*****************************************************************************
+*
 * File Name : main.c
-* 
-* Description: main 
-* 
-* Copyright (c) 2014 Winner Micro Electronic Design Co., Ltd. 
-* All rights reserved. 
-* 
+*
+* Description: main
+*
+* Copyright (c) 2014 Winner Micro Electronic Design Co., Ltd.
+* All rights reserved.
+*
 * Author : dave
-* 
+*
 * Date : 2014-6-14
-*****************************************************************************/ 
+*****************************************************************************/
 #define LWIP_HTTPD_CGI 1
 
 #include "lwip/apps/httpd_opts.h"
@@ -20,6 +20,7 @@
 #include "wm_param.h"
 #include "utils.h"
 #include <stdio.h>
+#include "blinker_task.h"
 
 #define ADD_BLACK_STATE  0
 #define DEL_BLACK_STATE 1
@@ -31,7 +32,8 @@ static u32 delblackstatimeout = 60;
 static u32 delcnt = 0;
 static u32 addrefusecnt = 0;
 static u32 addrefusecnttimeout = 60;
-
+static OS_STK BlinkTaskStk[128];
+static tls_os_task_t blinkerTaskHandle = NULL;
 
 static void demo_monitor_stalist_tim(void *ptmr, void *parg)
 {
@@ -176,16 +178,29 @@ int CreateAP(){
     return ret;
 }
 
-static struct tls_param_flash my_param;
+//static struct tls_param_flash my_param;
 extern struct tls_param_flash *pfparam;
 
 void UserMain(void)
 {
     printf("\n user task \n");
+/*
     int z = tls_param_init();
     printf("tls_param_init() == %d\n", z);
     z = tls_param_get(TLS_PARAM_ID_ALL, &my_param, TRUE);
     printf("tls_param_get() == %d\n", z);
+*/
+//    csi_coret_config(160, SYS_TICK_IRQn);	// systick every uS		нельзя пользовать SysTick, т.к. он используется FreeRTOS для переключения задач
+    //csi_coret_config(g_system_clock / CONFIG_SYSTICK_HZ, SYS_TICK_IRQn);    //10ms
+    // CONFIG_SYSTICK_HZ is never defined!!! We want it to be 1000000 Hz
+//    csi_vic_enable_irq(SYS_TICK_IRQn);
+    BlinkInit(WM_IO_PB_05, 2, 500, 4, 100); // PB5, PB11
+    tls_os_task_create(&blinkerTaskHandle, NULL,
+                       BlinkTask, NULL,
+                       (void *)BlinkTaskStk,          /* task's stack start address */
+                       128 * sizeof(u32), /* task's stack size, unit:byte */
+                       DEMO_TASK_PRIO, 0);
+
     printf("magic:%X, partition: %X, mod_cnt: %d, len: %d, crc: %X\n", pfparam->magic, pfparam->partition_num, pfparam->modify_count, pfparam->length, pfparam->crc32);
     printf("ssid:%s\n", pfparam->parameters.ssid.ssid);
     printf("channel_enable:%d\n", pfparam->parameters.channel_enable);
@@ -195,7 +210,6 @@ void UserMain(void)
     printf("wireless_protocol:%d\n", pfparam->parameters.wireless_protocol);
     printf("key:%s\n", pfparam->parameters.key.psk);
 
-//    httpd_init();		// есть смысл это делать только после установки связи с точкой доступа
     CreateAP();
     httpd_init(80);
 
