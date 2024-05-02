@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CDK_Workspace Name="CDK_WS" Database="">
-  <Project Name="W800_SDK" Path="W800_SDK/W800_SDK.cdkproj" Active="Yes"/>
+  <Project Name="W800_SDK" Path="W800_SDK/W800_SDK.cdkproj" Active="No"/>
   <Project Name="W800_SDK_BT" Path="W800_SDK_BT/W800_SDK_BT.cdkproj" Active="No"/>
   <DefaultPackPath>$(CDKPath)/CSKY/PACK</DefaultPackPath>
-  <Project Name="smartl_ck804ef-coremark" Path="smartl_ck804ef-coremark/projects/benchmark/coremark/CDK/smartl_ck804ef-coremark.cdkproj" RootPath="smartl_ck804ef-coremark" Active="No"/>
+  <Project Name="smartl_ck804ef-coremark" Path="smartl_ck804ef-coremark/projects/benchmark/coremark/CDK/smartl_ck804ef-coremark.cdkproj" RootPath="smartl_ck804ef-coremark" Active="Yes"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Environment/>
