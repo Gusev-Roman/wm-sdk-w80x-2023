@@ -91,17 +91,9 @@ void lcd_test(void)
 	*/
 	//show_sym_by_bitmap(0x3F, 1); // draw "0" on 1st pos
 	while(1){
-		clean_pos(0);
-		clean_pos(1);
-		clean_pos(2);
-		clean_pos(3);
 		lcd_show_tail("99942");
 		tls_os_time_delay(500);
-
 		clean_pos(0);
-		clean_pos(1);
-		clean_pos(2);
-		clean_pos(3);
 		lcd_show_str("-5\xB0");
 		tls_os_time_delay(500);
 	}

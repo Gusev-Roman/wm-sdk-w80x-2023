@@ -48,7 +48,7 @@ int show_sym_by_asc(char sym, uint8_t pos){
 	if(sp){
 		idx = sp - _printables;
 		bmp = _bitmaps[idx];
-		//printf("char: %c, idx:%d, bmp:%x\n", sym, idx, bmp);
+		printf("char: %c, idx:%d, bmp:%x\n", sym, idx, bmp);
 		show_sym_by_bitmap(bmp, pos);
 	}
 	else{

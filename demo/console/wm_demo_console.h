@@ -96,7 +96,7 @@ extern int demo_ble_config(void *, ...); /*wifi connection by ble configuration*
 
 
 
-#if (DEMO_BT == CFG_ON)
+#if DEMO_BT
 extern int demo_bt_enable(void *, ...);
 extern int demo_bt_destroy(void *, ...);
 #if (TLS_CONFIG_BLE == CFG_ON)

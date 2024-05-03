@@ -5,3 +5,6 @@ bin
 tools/w800/wm_getver
 tools/w800/projects/SDK_Project/project/CDK_WS/W800_SDK/*
 !tools/w800/projects/SDK_Project/project/CDK_WS/W800_SDK/W800_SDK.cdkproj
+.cache/
+Obj/
+.vscode

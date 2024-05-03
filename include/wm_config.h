@@ -24,7 +24,7 @@
 #define TLS_CONFIG_ONLY_FACTORY_ATCMD                   CFG_OFF
 
 /**Host Interface&Command**/
-#define TLS_CONFIG_HOSTIF 								CFG_ON
+#define TLS_CONFIG_HOSTIF 								CFG_OFF
 #define TLS_CONFIG_AT_CMD								(CFG_ON && TLS_CONFIG_HOSTIF)
 #define TLS_CONFIG_RI_CMD								(CFG_ON && TLS_CONFIG_HOSTIF)
 #define TLS_CONFIG_RMMS									(CFG_ON && TLS_CONFIG_HOSTIF)
@@ -54,7 +54,7 @@ HTTPS Lib
 SSL LIB
 CRYPTO
 */
-#define TLS_CONFIG_HTTP_CLIENT							(CFG_ON)
+#define TLS_CONFIG_HTTP_CLIENT							(CFG_OFF)
 #define TLS_CONFIG_HTTP_CLIENT_PROXY					CFG_OFF
 #define TLS_CONFIG_HTTP_CLIENT_AUTH_BASIC				CFG_OFF
 #define TLS_CONFIG_HTTP_CLIENT_AUTH_DIGEST				CFG_OFF
@@ -76,11 +76,11 @@ CRYPTO
 #define TLS_CONFIG_NTP 									CFG_ON
 
 #if NIMBLE_FTR
-#define TLS_CONFIG_BLE                                  CFG_OFF //CFG_ON
+#define TLS_CONFIG_BLE                                  CGF_OFF//CFG_ON
 #define TLS_CONFIG_BR_EDR								CFG_OFF
 #else
 #define TLS_CONFIG_BLE                                  CFG_OFF
-#define TLS_CONFIG_BR_EDR								CFG_OFF	//CFG_ON
+#define TLS_CONFIG_BR_EDR								GFG_OFF//CFG_ON
 #endif
 
 #define TLS_CONFIG_BT                                  (TLS_CONFIG_BR_EDR || TLS_CONFIG_BLE)

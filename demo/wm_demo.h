@@ -54,7 +54,7 @@
 #define DEMO_TIMER					(DEMO_OFF && DEMO_CONSOLE)
 
 //i2c demo
-#define DEMO_I2C					(DEMO_OFF && DEMO_CONSOLE)
+#define DEMO_I2C					(DEMO_ON && DEMO_CONSOLE)
 
 //pwm demo
 #define DEMO_PWM					(DEMO_OFF && DEMO_CONSOLE)
@@ -102,7 +102,7 @@
 
 #define DEMO_DSP					(DEMO_ON && DEMO_CONSOLE)
 
-#define DEMO_BT                     (DEMO_OFF && DEMO_CONSOLE)
+#define DEMO_BT                     DEMO_OFF //(DEMO_ON && DEMO_CONSOLE)
 
 #define DEMO_AVOID_COPY             (DEMO_OFF && DEMO_CONSOLE)
 

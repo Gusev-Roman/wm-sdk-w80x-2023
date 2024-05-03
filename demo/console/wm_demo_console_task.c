@@ -19,8 +19,6 @@ static tls_os_queue_t 	*demo_q = NULL;
 static OS_STK 			DemoTaskStk[DEMO_TASK_SIZE];
 static Demo_Console 	gstConsole;
 #define DEMO_CONSOLE_BUF_SIZE   512
-u8	tmbuf[16];
-u8	ii=0;
 
 extern int strtodec(int *dec, char *str);
 
@@ -35,32 +33,17 @@ void demo_console_malloc(void)
     }
     memset(gstConsole.rx_buf, 0, DEMO_CONSOLE_BUF_SIZE + 1);
 }
-// Interrupt Handler!
+
 s16 demo_console_rx(u16 len, void* user_data)
 {
-	tls_uart_read(TLS_UART_0, tmbuf, len);
-	for(u16 i = 0; i<len; i++){
-		if(tmbuf[i] == '\n'){
-			gstConsole.rx_buf[ii++] = 0;
-			//printf("rcvd:%s\n", (char *)gstConsole.rx_buf);
-			ii=0;
-			tls_os_queue_send(demo_q, (void *)1, 0);
-		}
-		else{
-        	gstConsole.rx_buf[ii++] = tmbuf[i];
-			if(ii == DEMO_CONSOLE_BUF_SIZE){
-				ii=0;
-				tls_os_queue_send(demo_q, (void *)1, 0); // string is too long
-			}
-    	}
-	}
-	/*
+    gstConsole.rx_data_len += len;
+
     if (gstConsole.MsgNum < 3)
     {
         gstConsole.MsgNum ++;
         tls_os_queue_send(demo_q, (void *)1, 0);
     }
-	*/
+
     return 0;
 }
 
@@ -236,7 +219,7 @@ int demo_cmd_execute(Demo_Console *sys)
 				if (str_n > strfirst)
 				{
 					strfirst[str_n - strfirst] = '\0';
-				}
+				}				
 			}
 			else if (str_r && str_n)
 			{
