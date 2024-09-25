@@ -113,28 +113,27 @@ ble_uuid_copy(ble_uuid_any_t *dst, const ble_uuid_t *src)
     }
 }
 
-char *
-ble_uuid_to_str(const ble_uuid_t *uuid, char *dst)
+char *ble_uuid_to_str(const ble_uuid_t *uuid, char *dst)
 {
     const uint8_t *u8p;
 
     switch(uuid->type) {
         case BLE_UUID_TYPE_16:
-            sprintf(dst, "0x%04x", BLE_UUID16(uuid)->value);
+            sprintf(dst, "0x%04x%c", BLE_UUID16(uuid)->value, 0);
             break;
 
         case BLE_UUID_TYPE_32:
-            sprintf(dst, "0x%08x", BLE_UUID32(uuid)->value);
+            sprintf(dst, "0x%08x%c", BLE_UUID32(uuid)->value, 0);
             break;
 
         case BLE_UUID_TYPE_128:
             u8p = BLE_UUID128(uuid)->value;
             sprintf(dst, "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-"
-                    "%02x%02x%02x%02x%02x%02x",
+                    "%02x%02x%02x%02x%02x%02x%c",
                     u8p[15], u8p[14], u8p[13], u8p[12],
                     u8p[11], u8p[10],  u8p[9],  u8p[8],
                     u8p[7],  u8p[6],  u8p[5],  u8p[4],
-                    u8p[3],  u8p[2],  u8p[1],  u8p[0]);
+                    u8p[3],  u8p[2],  u8p[1],  u8p[0], 0);
             break;
 
         default:

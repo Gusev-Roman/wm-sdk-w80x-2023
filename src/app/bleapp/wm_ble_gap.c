@@ -149,7 +149,7 @@ int tls_nimble_gap_adv(wm_ble_adv_type_t type, int duration)
 
         /* set adv parameters */
         memset(&adv_params, 0, sizeof(adv_params));
-        
+
         if(adv_params_dft.conn_mode == BLE_GAP_CONN_MODE_NON && adv_params_dft.disc_mode == BLE_GAP_DISC_MODE_NON)
         {
             switch(type) {
@@ -157,31 +157,31 @@ int tls_nimble_gap_adv(wm_ble_adv_type_t type, int duration)
                     adv_params.conn_mode = BLE_GAP_CONN_MODE_UND;
                     adv_params.disc_mode = BLE_GAP_DISC_MODE_GEN;
                     break;
-            
+
                 case WM_BLE_ADV_NONCONN_IND:
                     adv_params.conn_mode = BLE_GAP_CONN_MODE_NON;
                     adv_params.disc_mode = BLE_GAP_DISC_MODE_NON;
                     break;
-            
+
                 case WM_BLE_ADV_SCAN_IND:
                     adv_params.conn_mode = BLE_GAP_CONN_MODE_NON;
                     adv_params.disc_mode = BLE_GAP_DISC_MODE_GEN; // LTD same as GEN;
                     break;
-            
+
                 case WM_BLE_ADV_DIRECT_IND_HDC:
                     adv_params.high_duty_cycle = 1;
-            
+
                 //passthrough;
                 case WM_BLE_ADV_DIRECT_IND_LDC:
                     adv_params.conn_mode = BLE_GAP_CONN_MODE_DIR;
                     adv_params.disc_mode = BLE_GAP_DISC_MODE_GEN;
-            
+
                     if(ble_addr_cmp(&direct_adv_addr, BLE_ADDR_ANY) == 0) {
                         return BLE_HS_EINVAL;
                     }
-            
+
                     break;
-            
+
                 default:
                     /**/
                     adv_params.conn_mode = BLE_GAP_CONN_MODE_UND;
@@ -209,7 +209,7 @@ int tls_nimble_gap_adv(wm_ble_adv_type_t type, int duration)
             adv_params.itvl_max = 160;
         }
 
-        TLS_BT_APPL_TRACE_DEBUG("Starting advertising\r\n");
+        TLS_BT_APPL_TRACE_DEBUG("Starting BLE advertising\r\n");
         /* As own address type we use hard-coded value, because we generate
               NRPA and by definition it's random */
         rc = ble_gap_adv_start(own_addr_type, &direct_adv_addr, duration ? duration : BLE_HS_FOREVER,
@@ -418,12 +418,15 @@ int tls_ble_gap_deinit(void)
     return 0;
 }
 
+// Fix of dev name!
+#define BLE_SVC_GAP_DEVICE_NAME_MAX_LENGTH 40
 int tls_ble_gap_init(void)
 {
     char default_device_name[MYNEWT_VAL(BLE_SVC_GAP_DEVICE_NAME_MAX_LENGTH)];
     uint8_t bt_mac[6];
     int ret_len = 0;
-    
+
+    memset(default_device_name, 0, sizeof(default_device_name));
     g_scan_state = WM_BLE_SCAN_STOP;
     memset(&adv_params_dft, 0, sizeof(adv_params_dft));
     //adv_params_dft.conn_mode = BLE_GAP_CONN_MODE_UND;  //default conn  mode;

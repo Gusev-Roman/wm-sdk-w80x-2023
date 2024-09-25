@@ -122,6 +122,7 @@ on_svr_register_cb(struct ble_gatt_register_ctxt *ctxt, void *arg)
             break;
 
         case BLE_GATT_REGISTER_OP_CHR:
+// TODO!
             TLS_BT_APPL_TRACE_DEBUG("charact,uuid16 %s arg %d def_handle=%d (%04X) val_handle=%d (%04X)\r\n",
                                     ble_uuid_to_str(ctxt->chr.chr_def->uuid, buf),
                                     (int)ctxt->chr.chr_def->arg,
