@@ -30,22 +30,26 @@ static uint8_t wm_ble_wifi_prof_connected = 0;
 /* ble wifi attr write/notify handle */
 uint16_t g_blewifi_attr_write_and_notify_handle;
 uint16_t g_blewifi_conn_handle;
+uint16_t g_char2_handle;
 uint8_t g_blewifi_prof_disconect_reason;
 
 
 
-#define WM_BLE_WIFI_SERVICE_UUID        0x1824
-#define WM_BLE_WIFI_WRITE_INDICATE_UUID 0x2ABC
+#define WM_BLE_WIFI_SERVICE_UUID        0x180A
+#define WM_BLE_WIFI_WRITE_INDICATE_UUID 0x2A29
 
 
 static int
 gatt_svr_chr_access_wifi_write_and_notify(uint16_t conn_handle, uint16_t attr_handle,
         struct ble_gatt_access_ctxt *ctxt, void *arg);
+// написать этот каллбэк)
+static int gatt_svr_char_read_cb(uint16_t conn_handle, uint16_t attr_handle, struct ble_gatt_access_ctxt *ctxt, void *arg);
 
 
 /*
  * LOCAL FUNCTION DECLARATIONS
  ****************************************************************************************
+ * 
  */
 
 
@@ -57,9 +61,14 @@ static const struct ble_gatt_svc_def gatt_wifi_svr_svcs[] = {
         .characteristics = (struct ble_gatt_chr_def[])
         { {
                 .uuid = BLE_UUID16_DECLARE(WM_BLE_WIFI_WRITE_INDICATE_UUID),
-                .val_handle = &g_blewifi_attr_write_and_notify_handle,
+                .val_handle = &g_blewifi_attr_write_and_notify_handle,		// uint16_t
                 .access_cb = gatt_svr_chr_access_wifi_write_and_notify,
                 .flags = BLE_GATT_CHR_F_INDICATE | BLE_GATT_CHR_F_WRITE,
+            }, {
+                .uuid = BLE_UUID16_DECLARE(0x2A24), // "Manufacturer name string"
+                .val_handle = &g_char2_handle,
+                .access_cb = gatt_svr_chr_access_wifi_write_and_notify,		// change to new callback
+                .flags = BLE_GATT_CHR_F_READ,
             }, {
                 0, /* No more characteristics in this service */
             }
@@ -76,6 +85,7 @@ static const struct ble_gatt_svc_def gatt_wifi_svr_svcs[] = {
  ****************************************************************************************
  */
 
+// пришли данные, просто напечатать их и не делать всякую фигню
 static int
 gatt_svr_chr_access_wifi_write_and_notify(uint16_t conn_handle, uint16_t attr_handle,
         struct ble_gatt_access_ctxt *ctxt, void *arg)
@@ -84,14 +94,17 @@ gatt_svr_chr_access_wifi_write_and_notify(uint16_t conn_handle, uint16_t attr_ha
 
     switch(ctxt->op) {
         case BLE_GATT_ACCESS_OP_WRITE_CHR:
+            /*
             while(om) {
                 TLS_HAL_CBACK(ps_wifi_prof_callback, write_cb, 0, (uint8_t *)om->om_data, om->om_len, 0);
                 om = SLIST_NEXT(om, om_next);
             }
-
+            */
+            TLS_BT_APPL_TRACE_API("Data RCVD:[%s]\r\n", (uint8_t *)om->om_data);
             return 0;
 
         default:
+            TLS_BT_APPL_TRACE_API("ctxt->op == %d\r\n", ctxt->op);
             assert(0);
             return BLE_ATT_ERR_UNLIKELY;
     }
@@ -119,11 +132,11 @@ err:
 
 static void conn_param_update_cb(uint16_t conn_handle, int status, void *arg)
 {
-    TLS_BT_APPL_TRACE_DEBUG("conn param update complete; conn_handle=%d status=%d\n",
+    TLS_BT_APPL_TRACE_DEBUG("[prof] conn param update complete; conn_handle=%d status=%d\n",
                             conn_handle, status);
     if(status!=0)
     {
-        
+
     }
 }
 
@@ -131,6 +144,8 @@ static void wm_ble_server_wifi_conn_param_update_slave()
 {
     int rc;
     struct ble_l2cap_sig_update_params params;
+
+    TLS_BT_APPL_TRACE_API("%s started...\r\n", __FUNCTION__);
     params.itvl_min = 16;
     params.itvl_max = 32;
     params.slave_latency = 0;
@@ -159,7 +174,7 @@ static int ble_gap_evt_cb(struct ble_gap_event *event, void *arg)
                                         g_blewifi_conn_handle, g_blewifi_attr_write_and_notify_handle);
                 wm_ble_wifi_prof_connected = 1;
                 g_blewifi_prof_disconect_reason = 0;
-                g_blewifi_conn_handle = event->connect.conn_handle;    
+                g_blewifi_conn_handle = event->connect.conn_handle;
                 TLS_HAL_CBACK(ps_wifi_prof_callback, connected_cb, 0);
                 tls_bt_async_proc_func(wm_ble_server_wifi_conn_param_update_slave, NULL, 100);
 
@@ -167,9 +182,9 @@ static int ble_gap_evt_cb(struct ble_gap_event *event, void *arg)
             break;
 
         case BLE_GAP_EVENT_DISCONNECT:
-            
+
             if(event->disconnect.conn.role != BLE_GAP_ROLE_SLAVE) return 0;
-            
+
             TLS_BT_APPL_TRACE_DEBUG("disconnect reason=0x%02x(%d), app_reason=%d\r\n", (event->disconnect.reason - 0x200),
                                     event->disconnect.reason,g_blewifi_prof_disconect_reason);
             wm_ble_wifi_prof_connected = 0;
@@ -189,7 +204,7 @@ static int ble_gap_evt_cb(struct ble_gap_event *event, void *arg)
             rc = ble_gap_conn_find(event->notify_tx.conn_handle , &desc);
             assert(rc == 0);
             if(desc.role != BLE_GAP_ROLE_SLAVE) return 0;
-            
+
             if(event->notify_tx.status == BLE_HS_EDONE) {
                 TLS_HAL_CBACK(ps_wifi_prof_callback, indication_cb, 0);
             } else {
@@ -203,18 +218,18 @@ static int ble_gap_evt_cb(struct ble_gap_event *event, void *arg)
             rc = ble_gap_conn_find(event->mtu.conn_handle , &desc);
             assert(rc == 0);
             if(desc.role != BLE_GAP_ROLE_SLAVE) return 0;
-            
+
             TLS_BT_APPL_TRACE_DEBUG("wm ble dm mtu changed to(%d)\r\n", event->mtu.value);
             TLS_HAL_CBACK(ps_wifi_prof_callback, mtu_changed_cb, event->mtu.value);
             break;
-            
+
         case BLE_GAP_EVENT_SUBSCRIBE:
             rc = ble_gap_conn_find(event->subscribe.conn_handle , &desc);
             assert(rc == 0);
             if(desc.role != BLE_GAP_ROLE_SLAVE) return 0;
-            
+
             TLS_BT_APPL_TRACE_DEBUG("subscribe [%d]indicate(%d,%d)\r\n",event->subscribe.attr_handle,  event->subscribe.prev_indicate,
-                                    event->subscribe.cur_indicate);     
+                                    event->subscribe.cur_indicate);
             break;
         case BLE_GAP_EVENT_HOST_SHUTDOWN:
             TLS_BT_APPL_TRACE_DEBUG("Server[WiFi] BLE_GAP_EVENT_HOST_SHUTDOWN\r\n");
@@ -238,9 +253,9 @@ int tls_ble_wifi_adv(bool enable)
     int rc;
 
     if(enable) {
-        struct ble_hs_adv_fields fields;
+        struct ble_hs_adv_fields fields;				// изучить эту структуру. Можно ли избавиться от ff_data?
         const char *name;
-        uint8_t adv_ff_data[] = {0x0C, 0x07, 0x00, 0x10};
+        uint8_t adv_ff_data[] = {0x0C, 0x07, 0x00, 0x10};		// левый тег адвертайзинга?
         /**
          *  Set the advertisement data included in our advertisements:
          *     o Flags (indicates advertisement type and other general info).
@@ -254,7 +269,7 @@ int tls_ble_wifi_adv(bool enable)
          */
         fields.flags = BLE_HS_ADV_F_DISC_GEN |
                        BLE_HS_ADV_F_BREDR_UNSUP;
-        name = ble_svc_gap_device_name();
+        name = ble_svc_gap_device_name();		// тут можно создать рандомное имя девайса (имитировать самокат)
         fields.name = (uint8_t *)name;
         fields.name_len = strlen(name);
         fields.name_is_complete = 1;
@@ -283,15 +298,15 @@ int tls_ble_wifi_prof_init(wm_ble_wifi_prof_callbacks_t *callback)
 
     if(ps_wifi_prof_callback == NULL) {
         wm_ble_wifi_prof_connected = 0;
-        
+
         //step 0: reset other services. Note
         rc = ble_gatts_reset();
-        
+
         if(rc != 0) {
             TLS_BT_APPL_TRACE_ERROR("tls_ble_wifi_prof_init failed rc=%d\r\n", rc);
             return rc;
         }
-        
+
         ps_wifi_prof_callback = callback;
 
         rc = blewifi_gatt_svr_init();

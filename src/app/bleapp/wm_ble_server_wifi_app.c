@@ -49,7 +49,7 @@ static int PAYLOAD_FRAGMENT_LENGTH = 15;
 
 #define DEFAULT_SEND_FLAG        0x00
 
-#define DISCONNECT_TIME_OUT     (60*1000)
+#define DISCONNECT_TIME_OUT     (15*60*1000)	// Вот он козлиный таймер! Поменяем его на 15 минут!
 #define WIFI_REPORT_IP_TIME_OUT (15*1000)
 
 #define CONFIG_STA_CMD                0x0A
@@ -1211,10 +1211,10 @@ int tls_ble_wifi_cfg_init()
         return BLE_HS_EDISABLED;
     }
 
-    TLS_BT_APPL_TRACE_DEBUG("wm_bt_wifi_cfg_init, service_enabled=%d\r\n", g_bt_wifi_service_enabled);
+    TLS_BT_APPL_TRACE_DEBUG("%s, service_enabled=%d\r\n", __FUNCTION__, g_bt_wifi_service_enabled);
 
     if(g_bt_wifi_service_enabled == 1) {
-		TLS_BT_APPL_TRACE_WARNING("wm_bt_wifi_cfg_init, service_enabled=%d\r\n", g_bt_wifi_service_enabled);
+		TLS_BT_APPL_TRACE_WARNING("%s, service_enabled=%d [EALREADY]\r\n", __FUNCTION__, g_bt_wifi_service_enabled);
         return BLE_HS_EALREADY;
     }
 
@@ -1230,12 +1230,13 @@ int tls_ble_wifi_cfg_init()
     rc = tls_ble_wifi_prof_init(&wm_ble_wifi_cfg_cb);
 
     if(rc != 0) {
-        TLS_BT_APPL_TRACE_ERROR("wm_wifi_prof_init, ret=%d\r\n", rc);
+        TLS_BT_APPL_TRACE_ERROR("tls_ble_wifi_prof_init() ret=%d\r\n", rc);
     } else {
         /*step 2: start the service*/
         rc = ble_gatts_start();
         assert(rc == 0);
         /*step 3: start advertisement*/
+        TLS_BT_APPL_TRACE_API("Starting tls_ble_wifi_adv()...\r\n");
         tls_ble_wifi_adv(true);
     }
 

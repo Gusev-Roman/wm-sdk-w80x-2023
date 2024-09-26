@@ -1226,9 +1226,7 @@ ble_gatts_start(void)
     }
 
     if(ble_hs_max_client_configs > 0) {
-        ble_gatts_clt_cfg_mem = tls_mem_alloc(
-                                                OS_MEMPOOL_BYTES(ble_hs_max_client_configs,
-                                                        sizeof(struct ble_gatts_clt_cfg)));
+        ble_gatts_clt_cfg_mem = tls_mem_alloc(OS_MEMPOOL_BYTES(ble_hs_max_client_configs, sizeof(struct ble_gatts_clt_cfg)));
 
         if(ble_gatts_clt_cfg_mem == NULL) {
             rc = BLE_HS_ENOMEM;

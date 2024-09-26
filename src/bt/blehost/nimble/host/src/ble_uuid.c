@@ -112,7 +112,9 @@ ble_uuid_copy(ble_uuid_any_t *dst, const ble_uuid_t *src)
             break;
     }
 }
-
+/**
+ * NOTE: sprintf() works wrong, it does not send '\0' char to end of output buffer
+ */
 char *ble_uuid_to_str(const ble_uuid_t *uuid, char *dst)
 {
     const uint8_t *u8p;

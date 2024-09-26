@@ -110,6 +110,10 @@ on_reset(int reason)
     TLS_BT_APPL_TRACE_DEBUG("Resetting state; reason=%d\r\n", reason);
     app_adapter_state_changed_callback(WM_BT_STATE_OFF);
 }
+/**
+ * Callback for GATT service/chatact/descrip registration
+ * just print item's IDs to output log
+ */
 static void
 on_svr_register_cb(struct ble_gatt_register_ctxt *ctxt, void *arg)
 {
@@ -122,7 +126,6 @@ on_svr_register_cb(struct ble_gatt_register_ctxt *ctxt, void *arg)
             break;
 
         case BLE_GATT_REGISTER_OP_CHR:
-// TODO!
             TLS_BT_APPL_TRACE_DEBUG("charact,uuid16 %s arg %d def_handle=%d (%04X) val_handle=%d (%04X)\r\n",
                                     ble_uuid_to_str(ctxt->chr.chr_def->uuid, buf),
                                     (int)ctxt->chr.chr_def->arg,
@@ -145,6 +148,7 @@ on_svr_register_cb(struct ble_gatt_register_ctxt *ctxt, void *arg)
 int
 tls_bt_init(uint8_t uart_idx)
 {
+    TLS_BT_APPL_TRACE_DEBUG("%s() starting\r\n", __FUNCTION__);
     if(bt_adapter_state == WM_BT_STATE_ON) {
         return BLE_HS_EALREADY;
     }
@@ -172,7 +176,7 @@ tls_bt_init(uint8_t uart_idx)
     /*Application levels code entry*/
     tls_ble_gap_init();
     tls_bt_util_init();
-    /*Initialize the vuart interface and enable controller*/
+    /*Initialize the vuart interface and enable controller [???] */
     ble_hci_vuart_init(uart_idx);
     /* As the last thing, process events from default event queue. */
     tls_nimble_start();
@@ -180,7 +184,7 @@ tls_bt_init(uint8_t uart_idx)
     while(bt_adapter_state == WM_BT_STATE_OFF) {
         tls_os_time_delay(10);
     }
-
+    TLS_BT_APPL_TRACE_DEBUG("%s() exiting\r\n", __FUNCTION__);
     return 0;
 }
 
