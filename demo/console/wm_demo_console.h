@@ -331,7 +331,7 @@ struct demo_console_info_t  console_tbl[] =
 
 #if DEMO_FATFS
 	{"t-fatfs",	fatfs_test,	0x0,	0,  "Test fatfs on sd card"},
-#endif 
+#endif
 
 #if DEMO_IPERF_AUTO_TEST
 	{"t-iperf",  demo_iperf_auto_test,	 0x7E,	  7, "Iperf auto test"},
@@ -342,41 +342,41 @@ struct demo_console_info_t  console_tbl[] =
 #endif
 
 #if DEMO_BT
-    {"t-bt-on",	demo_bt_enable,	0x0,	0,                  "Test enable bt system"},
-    {"t-bt-off",	demo_bt_destroy,	0x0,	0,          "Test destroy bt system"},
-#if (TLS_CONFIG_BLE == CFG_ON)    
-    {"t-ble-server-on",	demo_ble_server_on,	0x0,	0,      "Test enable ble server"},
-    {"t-ble-server-off",	demo_ble_server_off,	0x0,	0,  "Test disable ble server"},
-    {"t-ble-client-on",	demo_ble_client_on,	0x0,	0,      "Test enable ble client"},
-    {"t-ble-client-off",	demo_ble_client_off,	0x0,	0,  "Test disable ble client"},
-    {"t-ble-adv", demo_ble_adv, 0x01, 1, "Test start connectable/unconnectable/stop ble advertisement,eg: t-ble-adv=(1/2/0)"},
-    {"t-ble-scan",demo_ble_scan, 0x01, 1, "Test start/stop ble scan,eg: t-ble-scan=(1/0)"},
-#endif  
+    {"t-bt-on",			demo_bt_enable,	0x0,	0,         "Test enable bt system (mandatory!)"},
+    {"t-bt-off",		demo_bt_destroy,	0x0,	0, "Test destroy bt system"},
+#if (TLS_CONFIG_BLE == CFG_ON)
+    {"t-ble-server-on",		demo_ble_server_on,	0x0,	0, "Test enable ble server"},
+    {"t-ble-server-off",	demo_ble_server_off,	0x0,	0, "Test disable ble server"},
+    {"t-ble-client-on",		demo_ble_client_on,	0x0,	0, "Test enable ble client"},
+    {"t-ble-client-off",	demo_ble_client_off,	0x0,	0, "Test disable ble client"},
+    {"t-ble-adv",		demo_ble_adv, 		0x01,	1, "Test start connectable/unconnectable/stop ble advertisement,eg: t-ble-adv=(1/2/0)"},
+    {"t-ble-scan",		demo_ble_scan, 		0x01,	1, "Test start/stop ble scan,eg: t-ble-scan=(1/0)"},
+#endif
 
-#if (TLS_CONFIG_BR_EDR == CFG_ON)    
-    {"t-bt-demo-on",	demo_bt_app_on,	0x0,	0,      "Test enable bt app on"},
-    {"t-bt-demo-off",	demo_bt_app_off,	0x0,	0,  "Test disable bt app off"},
-#endif 
+#if (TLS_CONFIG_BR_EDR == CFG_ON)
+    {"t-bt-demo-on",		demo_bt_app_on,		0x0,	0, "Test enable bt app on"},
+    {"t-bt-demo-off",		demo_bt_app_off,	0x0,	0, "Test disable bt app off"},
+#endif
 
 #endif
 
 #if DEMO_TOUCHSENSOR
-	{"t-touch", demo_touchsensor, 0x1, 1, "Test Touch sensor function,0:all, 1:touch sensor 1... 15:touch sensor 15"},
+    {"t-touch", demo_touchsensor, 0x1, 1, "Test Touch sensor function,0:all, 1:touch sensor 1... 15:touch sensor 15"},
 #endif
 
 #if DEMO_LCD
-	{"t-lcd", (void *)lcd_test, 0, 0, "Test LCD output, eg: t-lcd"},
+    {"t-lcd", (void *)lcd_test, 0, 0, "Test LCD output, eg: t-lcd"},
 #endif
 
 #if DEMO_AVOID_COPY
-	{"t-avoidcopy", avoid_copy_entry, 0x0, 0, "Test Avoid Copy function"},
+    {"t-avoidcopy", avoid_copy_entry, 0x0, 0, "Test Avoid Copy function"},
 #endif
 
-    //控制台上显示的最后一个命令，如果要让命令显示在控制台上，需要放在该行的上面
+    // The last command displayed on the console. If you want the command to be displayed on the console, you need to put it above this line.
     {"demohelp", 	demo_console_show_help,	0, 0,	"Display Help information"},
-    //下面的命令用于内部测试，不显示在控制台上
+    // The following commands are used for internal testing and are not displayed on the console.
     {"reset", 		demo_sys_reset, 0, 0, "Reset System"},
-    //最后一个命令，检索命令时判断结束标识
+    // The last command, judging the end mark when retrieving commands
     {"lastcmd", 	NULL,	0, 0,			"Table Terminal Flag; MUST BE THE LAST ONE"}
 };
 

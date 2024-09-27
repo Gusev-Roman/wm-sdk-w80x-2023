@@ -4,7 +4,7 @@
 #define DEMO_ON		1
 #define DEMO_OFF	0
 
-//demo console
+//demo console (defined in main Makefile)
 #ifndef DEMO_CONSOLE
 #define DEMO_CONSOLE                DEMO_OFF
 #endif
@@ -27,43 +27,43 @@
 #define DEMO_UARTx   		  		(DEMO_OFF && DEMO_CONSOLE)
 
 //AP dmeo
-#define DEMO_SOFT_AP   		  		(DEMO_OFF && DEMO_CONSOLE)
+#define DEMO_SOFT_AP   		  		(DEMO_ON && DEMO_CONSOLE)
 
 //WPS demo
-#define DEMO_WPS					(DEMO_OFF && DEMO_CONSOLE && TLS_CONFIG_WPS && TLS_IEEE8021X_EAPOL)
+#define DEMO_WPS				(DEMO_OFF && DEMO_CONSOLE && TLS_CONFIG_WPS && TLS_IEEE8021X_EAPOL)
 
 //gpio demo
-#define DEMO_GPIO					(DEMO_ON && DEMO_CONSOLE)
+#define DEMO_GPIO				(DEMO_ON && DEMO_CONSOLE)
 
 //flash demo
-#define DEMO_FLASH					(DEMO_ON && DEMO_CONSOLE)
+#define DEMO_FLASH				(DEMO_ON && DEMO_CONSOLE)
 
 //master spi demo
-#define DEMO_MASTER_SPI				(DEMO_OFF && DEMO_CONSOLE)
+#define DEMO_MASTER_SPI				(DEMO_ON && DEMO_CONSOLE)
 
 //Encryption&Decryption demo
 #define DEMO_ENCRYPT				(DEMO_ON && DEMO_CONSOLE)
 
 //rsa demo
-#define DEMO_RSA					(DEMO_OFF && DEMO_CONSOLE)
+#define DEMO_RSA				(DEMO_OFF && DEMO_CONSOLE)
 
 //rtc demo
-#define DEMO_RTC					(DEMO_OFF && DEMO_CONSOLE)
+#define DEMO_RTC				(DEMO_ON && DEMO_CONSOLE)
 
 //timer demo
-#define DEMO_TIMER					(DEMO_OFF && DEMO_CONSOLE)
+#define DEMO_TIMER				(DEMO_ON && DEMO_CONSOLE)
 
 //i2c demo
-#define DEMO_I2C					(DEMO_OFF && DEMO_CONSOLE)
+#define DEMO_I2C				(DEMO_ON && DEMO_CONSOLE)
 
 //pwm demo
-#define DEMO_PWM					(DEMO_OFF && DEMO_CONSOLE)
+#define DEMO_PWM				(DEMO_OFF && DEMO_CONSOLE)
 
 //pmu demo
-#define DEMO_PMU					(DEMO_OFF && DEMO_CONSOLE)
+#define DEMO_PMU				(DEMO_ON && DEMO_CONSOLE)
 
 //ntp demo
-#define DEMO_NTP					(DEMO_OFF && DEMO_CONSOLE)
+#define DEMO_NTP				(DEMO_OFF && DEMO_CONSOLE)
 
 //i2s demo
 #define DEMO_I2S					(DEMO_OFF && DEMO_CONSOLE)
@@ -100,25 +100,25 @@
 #define DEMO_FATFS                  (DEMO_OFF && DEMO_CONSOLE)
 #define DEMO_MBEDTLS                (DEMO_OFF && DEMO_CONSOLE)
 
-#define DEMO_DSP					(DEMO_ON && DEMO_CONSOLE)
+#define DEMO_DSP		    (DEMO_ON && DEMO_CONSOLE)
 
-#define DEMO_BT                     (DEMO_OFF && DEMO_CONSOLE)
+#define DEMO_BT                     (DEMO_ON && DEMO_CONSOLE)
 
 #define DEMO_AVOID_COPY             (DEMO_OFF && DEMO_CONSOLE)
 
 ////////////////////////////////////////////////////////////////
 
 // user prio 32 - 60
-#define  DEMO_TASK_PRIO			                32
-#define  DEMO_SOCKET_C_TASK_PRIO	            (DEMO_TASK_PRIO + 1)
-#define  DEMO_SOCKET_S_TASK_PRIO	            (DEMO_SOCKET_C_TASK_PRIO + 1)
-#define  DEMO_SOCKET_RECEIVE_TASK_PRIO	        (DEMO_SOCKET_S_TASK_PRIO + 1)
-#define  DEMO_SOCKET_S_SEND_TASK_PRIO    	    (DEMO_SOCKET_RECEIVE_TASK_PRIO + 1)
+#define  DEMO_TASK_PRIO			        32
+#define  DEMO_SOCKET_C_TASK_PRIO	        (DEMO_TASK_PRIO + 1)
+#define  DEMO_SOCKET_S_TASK_PRIO	        (DEMO_TASK_PRIO + 2)
+#define  DEMO_SOCKET_RECEIVE_TASK_PRIO	        (DEMO_TASK_PRIO + 3)
+#define  DEMO_SOCKET_S_SEND_TASK_PRIO    	(DEMO_SOCKET_RECEIVE_TASK_PRIO + 1)
 #define  DEMO_SOCKET_S_RECEIVE_TASK_PRIO    	(DEMO_SOCKET_S_SEND_TASK_PRIO + 1)
 #define  DEMO_UDP_TASK_PRIO                     (DEMO_SOCKET_S_RECEIVE_TASK_PRIO + 1)
 #define  DEMO_UDP_RECEIVE_TASK_PRIO             (DEMO_UDP_TASK_PRIO + 1)
 #define  DEMO_MCAST_TASK_PRIO	                (DEMO_UDP_RECEIVE_TASK_PRIO + 1)
-#define  DEMO_SOCK_FWUP_TASK_PRIO	            (DEMO_MCAST_TASK_PRIO + 1)
+#define  DEMO_SOCK_FWUP_TASK_PRIO	        (DEMO_MCAST_TASK_PRIO + 1)
 #define  DEMO_UART_TASK_PRIO	                (DEMO_SOCK_FWUP_TASK_PRIO + 1)
 #define  DEMO_SSL_SERVER_TASK_PRIO	            (DEMO_UART_TASK_PRIO + 1)
 #define  DEMO_WEBSOCKETS_TASK_PRIO              (DEMO_SSL_SERVER_TASK_PRIO + 1)

@@ -510,11 +510,16 @@ int demo_bt_destroy()
     return rc;
 }
 
+/**
+ * Entrypoint for BLE server demo (one GATT service, four characteristics) 
+ */
 int demo_ble_server_on()
 {
-    CHECK_SYSTEM_READY();
+    TLS_BT_APPL_TRACE_DEBUG("%s starting...\r\n", __FUNCTION__);
+    CHECK_SYSTEM_READY();	// simply check for BT is ON
 
     tls_ble_server_demo_api_init(NULL,NULL);
+    TLS_BT_APPL_TRACE_DEBUG("%s ending...\r\n", __FUNCTION__);
     return 0;
 }
 int demo_ble_server_off()

@@ -29,7 +29,7 @@ typedef enum {
     BLE_SERVER_MODE_INDICATING,
     BLE_SERVER_MODE_EXITING
 } ble_server_state_t;
-    
+
 static struct ble_gap_event_listener ble_server_event_listener;
 static uint8_t g_ble_demo_indicate_enable = 0;
 static uint8_t g_ble_demo_notify_enable = 0;
@@ -38,7 +38,7 @@ static int g_mtu = 20;
 static uint8_t g_ind_data[MYNEWT_VAL(BLE_ATT_PREFERRED_MTU)];
 static volatile uint8_t g_send_pending = 0;
 static volatile ble_server_state_t g_ble_server_state = BLE_SERVER_MODE_IDLE;
-static tls_ble_uart_output_ptr g_uart_output_ptr = NULL; 
+static tls_ble_uart_output_ptr g_uart_output_ptr = NULL;
 static tls_ble_uart_sent_ptr g_uart_in_and_sent_ptr = NULL;
 
 
@@ -52,12 +52,12 @@ uint16_t g_ble_demo_attr_read_handle;
 uint16_t g_ble_demo_conn_handle ;
 
 
-
-#define WM_GATT_SVC_UUID      0xFFF0
-#define WM_GATT_INDICATE_UUID 0xFFF1
-#define WM_GATT_WRITE_UUID    0xFFF2
-#define WM_GATT_READ_UUID     0xFFF3
-#define WM_GATT_NOTIFICATION_UUID 0xFFF4
+// standard IDs iphone-like
+#define WM_GATT_SVC_UUID      0x180A
+#define WM_GATT_INDICATE_UUID 0x2A00
+#define WM_GATT_WRITE_UUID    0x2A24
+#define WM_GATT_READ_UUID     0x2A29
+#define WM_GATT_NOTIFICATION_UUID 0x2A01
 
 #define WM_INDICATE_AUTO 1
 
@@ -83,7 +83,7 @@ static const struct ble_gatt_svc_def gatt_demo_svr_svcs[] = {
                 .uuid = BLE_UUID16_DECLARE(WM_GATT_WRITE_UUID),
                 .val_handle = &g_ble_demo_attr_write_handle,
                 .access_cb = gatt_svr_chr_demo_access_func,
-                .flags = BLE_GATT_CHR_F_WRITE,
+                .flags = BLE_GATT_CHR_F_READ,
             }, {
                 .uuid = BLE_UUID16_DECLARE(WM_GATT_READ_UUID),
                 .val_handle = &g_ble_demo_attr_read_handle,
@@ -93,13 +93,13 @@ static const struct ble_gatt_svc_def gatt_demo_svr_svcs[] = {
                 .uuid = BLE_UUID16_DECLARE(WM_GATT_INDICATE_UUID),
                 .val_handle = &g_ble_demo_attr_indicate_handle,
                 .access_cb = gatt_svr_chr_demo_access_func,
-                .flags = BLE_GATT_CHR_F_INDICATE,
+                .flags = BLE_GATT_CHR_F_READ,
             },
             {
                 .uuid = BLE_UUID16_DECLARE(WM_GATT_NOTIFICATION_UUID),
                 .val_handle = &g_ble_demo_attr_notify_handle,
                 .access_cb = gatt_svr_chr_demo_access_func,
-                .flags = BLE_GATT_CHR_F_NOTIFY,
+                .flags = BLE_GATT_CHR_F_READ,
             }, {
                 0, /* No more characteristics in this service */
             }
@@ -129,8 +129,7 @@ int wm_ble_server_api_demo_adv(bool enable)
          *     o Discoverability in forthcoming advertisement (general)
          *     o BLE-only (BR/EDR unsupported).
          */
-        fields.flags = BLE_HS_ADV_F_DISC_GEN |
-                       BLE_HS_ADV_F_BREDR_UNSUP;
+        fields.flags = BLE_HS_ADV_F_DISC_GEN | BLE_HS_ADV_F_BREDR_UNSUP;
         name = ble_svc_gap_device_name();
         fields.name = (uint8_t *)name;
         fields.name_len = strlen(name);
@@ -166,7 +165,7 @@ int wm_ble_server_api_demo_adv(bool enable)
  ****************************************************************************************
  */
 
-static uint8_t gatt_svc_test_read_value[200] = {0x01, 0x02, 0x03};
+static uint8_t gatt_svc_test_read_value[] = "Apple Inc.";//{0x01, 0x02, 0x03};
 
 static void tls_print_bytes(const char *desc, uint8_t *ptr, uint16_t len)
 {
@@ -185,6 +184,9 @@ static void tls_print_bytes(const char *desc, uint8_t *ptr, uint16_t len)
     printf("\r\n");
 }
 
+/**
+ * one Callback for all characters
+ */
 static int
 gatt_svr_chr_demo_access_func(uint16_t conn_handle, uint16_t attr_handle,
                               struct ble_gatt_access_ctxt *ctxt, void *arg)
@@ -195,6 +197,7 @@ gatt_svr_chr_demo_access_func(uint16_t conn_handle, uint16_t attr_handle,
     switch(ctxt->op) {
         case BLE_GATT_ACCESS_OP_WRITE_CHR:
             while(om) {
+		// if UART is defined, send data, otherwise print it out
                 if(g_uart_output_ptr) {
                     TLS_BT_APPL_TRACE_VERBOSE("### %s len=%d\r\n", __FUNCTION__, om->om_len);
                     g_uart_output_ptr(UART_OUTPUT_DATA, (uint8_t *)om->om_data, om->om_len);
@@ -329,7 +332,7 @@ static void conn_param_update_cb(uint16_t conn_handle, int status, void *arg)
                             conn_handle, status);
     if(status!=0)
     {
-        
+
     }
 }
 
@@ -367,7 +370,7 @@ wm_ble_server_demo_on_mtu(uint16_t conn_handle, const struct ble_gatt_error *err
 
     return 0;
 }
-#endif                          
+#endif
 static int ble_gap_evt_cb(struct ble_gap_event *event, void *arg)
 {
     int rc;
@@ -375,7 +378,7 @@ static int ble_gap_evt_cb(struct ble_gap_event *event, void *arg)
 
     switch(event->type) {
         case BLE_GAP_EVENT_CONNECT:
-            
+
             if(event->connect.status == 0) {
 
                 rc = ble_gap_conn_find(event->connect.conn_handle, &desc);
@@ -384,7 +387,7 @@ static int ble_gap_evt_cb(struct ble_gap_event *event, void *arg)
                     return 0;
                 }
                 TLS_BT_APPL_TRACE_DEBUG("Server connected status=%d handle=%d,g_ble_demo_attr_indicate_handle=%d\r\n",
-                                    event->connect.status, g_ble_demo_conn_handle, g_ble_demo_attr_indicate_handle);                
+                                    event->connect.status, g_ble_demo_conn_handle, g_ble_demo_attr_indicate_handle);
                 print_conn_desc(&desc);
                 g_ble_server_state = BLE_SERVER_MODE_CONNECTED;
                 //re set this flag, to prevent stop adv, but connected evt reported when deinit this demo
@@ -393,7 +396,7 @@ static int ble_gap_evt_cb(struct ble_gap_event *event, void *arg)
                 {
                     g_uart_output_ptr(UART_OUTPUT_CMD_CONNECTED, NULL, 0);
                 }
-                
+
 #if MYNEWT_VAL(BLEPRPH_LE_PHY_SUPPORT)
                 phy_conn_changed(event->connect.conn_handle);
 #endif
@@ -488,7 +491,7 @@ static int ble_gap_evt_cb(struct ble_gap_event *event, void *arg)
             rc = ble_gap_conn_find(event->subscribe.conn_handle , &desc);
             assert(rc == 0);
             if(desc.role != BLE_GAP_ROLE_SLAVE) return 0;
-            
+
             TLS_BT_APPL_TRACE_DEBUG("subscribe [%d]indicate(%d,%d)\r\n",event->subscribe.attr_handle,  event->subscribe.prev_indicate,
                                     event->subscribe.cur_indicate);
 
@@ -556,7 +559,7 @@ static int ble_gap_evt_cb(struct ble_gap_event *event, void *arg)
             /* Delete the old bond. */
             rc = ble_gap_conn_find(event->repeat_pairing.conn_handle, &desc);
             assert(rc == 0);
-            if(desc.role != BLE_GAP_ROLE_SLAVE) return 0;            
+            if(desc.role != BLE_GAP_ROLE_SLAVE) return 0;
             ble_store_util_delete_peer(&desc.peer_id_addr);
             TLS_BT_APPL_TRACE_DEBUG("!!!BLE_GAP_EVENT_REPEAT_PAIRING\r\n");
             return BLE_GAP_REPEAT_PAIRING_RETRY;
@@ -566,7 +569,7 @@ static int ble_gap_evt_cb(struct ble_gap_event *event, void *arg)
             return 0;
         case BLE_GAP_EVENT_L2CAP_UPDATE_REQ:
         case BLE_GAP_EVENT_CONN_UPDATE_REQ:
-            TLS_BT_APPL_TRACE_DEBUG("Server conn handle=%d,peer:[min=%d,max=%d,sup=%d],local[min=%d,max=%d,sup=%d]", event->conn_update_req.conn_handle, 
+            TLS_BT_APPL_TRACE_DEBUG("Server conn handle=%d,peer:[min=%d,max=%d,sup=%d],local[min=%d,max=%d,sup=%d]", event->conn_update_req.conn_handle,
                 event->conn_update_req.peer_params->itvl_min, event->conn_update_req.peer_params->itvl_max,event->conn_update_req.peer_params->supervision_timeout,
                 event->conn_update_req.self_params->itvl_min, event->conn_update_req.self_params->itvl_max,event->conn_update_req.self_params->supervision_timeout);
             break;
@@ -590,11 +593,11 @@ static int ble_gap_evt_cb(struct ble_gap_event *event, void *arg)
             }
             if(g_uart_in_and_sent_ptr) {
                 g_uart_in_and_sent_ptr = NULL;
-            }              
+            }
             break;
         default:
             TLS_BT_APPL_TRACE_VERBOSE("Server Unhandled event:%d\r\n", event->type);
-  
+
             break;
     }
 
@@ -607,6 +610,7 @@ static int ble_gap_evt_cb(struct ble_gap_event *event, void *arg)
  ****************************************************************************************
  */
 
+// BLE server demo entrypoint, level II (UARTs are set to 0)
 int tls_ble_server_demo_api_init(tls_ble_uart_output_ptr uart_output_ptr, tls_ble_uart_sent_ptr uart_in_and_sent_ptr)
 {
     int rc = BLE_HS_EAPP;
@@ -657,6 +661,7 @@ int tls_ble_server_demo_api_init(tls_ble_uart_output_ptr uart_output_ptr, tls_bl
 
     return rc;
 }
+
 int tls_ble_server_demo_api_deinit()
 {
     int rc = BLE_HS_EAPP;
@@ -686,7 +691,7 @@ int tls_ble_server_demo_api_deinit()
             }
 
             g_send_pending = 0;
-            g_ble_server_state = BLE_SERVER_MODE_IDLE;  
+            g_ble_server_state = BLE_SERVER_MODE_IDLE;
             ble_gap_event_listener_unregister(&ble_server_event_listener);
         }
     } else if(g_ble_server_state == BLE_SERVER_MODE_ADVERTISING) {
@@ -721,19 +726,17 @@ int tls_ble_server_demo_api_send_msg_indicate()
 {
     int rc;
     struct os_mbuf *om;
-    
+
     CHECK_SYSTEM_READY();
 
     TLS_BT_APPL_TRACE_VERBOSE("### %s len=%d\r\n", __FUNCTION__, 4000);
-    
 
     if(g_send_pending) { return BLE_HS_EBUSY; }
 
     memset(g_ind_data, ss, sizeof(g_ind_data));
     ss++;
-    
-    if(ss > 0xFE) { ss = 0x00; }
 
+    if(ss > 0xFE) { ss = 0x00; }
 
     om = ble_hs_mbuf_from_flat(g_ind_data, 4000);
 
@@ -745,30 +748,28 @@ int tls_ble_server_demo_api_send_msg_indicate()
 
     if(rc == 0) {
         g_send_pending = 1;
-        
+
     }else
     {
         printf("!!! tls_ble_server_demo_api_send_msg , rc=%d\r\n", rc);
     }
 
     return rc;
-
-    
-    return 0;
 }
+
 int tls_ble_server_demo_api_send_msg(uint8_t *data, int data_len)
 {
     int rc;
     struct os_mbuf *om;
-    
+
     CHECK_SYSTEM_READY();
 
     TLS_BT_APPL_TRACE_VERBOSE("### %s len=%d\r\n", __FUNCTION__, data_len);
-    
+
 
     if(g_send_pending) { return BLE_HS_EBUSY; }
     if(g_ble_demo_indicate_enable == 0) { return BLE_HS_EDISABLED; }
-    
+
     if(data_len <= 0 || data == NULL) {
         return BLE_HS_EINVAL;
     }
@@ -795,13 +796,13 @@ int tls_ble_server_demo_api_send_msg_notify(uint8_t *ptr, int length)
 {
     int rc;
     struct os_mbuf *om;
-    
+
     CHECK_SYSTEM_READY();
 
     TLS_BT_APPL_TRACE_VERBOSE("### %s len=%d\r\n", __FUNCTION__, g_mtu);
-    
+
     if(g_ble_demo_notify_enable == 0) return BLE_HS_EAGAIN;
-    
+
     if(g_send_pending) { return BLE_HS_EBUSY; }
 
 
@@ -823,13 +824,13 @@ int tls_ble_server_demo_api_send_msg_notify(uint8_t *ptr, int length)
         g_time_last = tls_os_get_time();
         printf("BLE Send(%d bytes)[%5.2f Kbps][mtu%d]/s\r\n", g_send_bytes, (g_send_bytes * 8.0 / 1024),length);
         g_send_bytes = 0;
-    }    
+    }
 #endif
-    
+
     }else
     {
         TLS_BT_APPL_TRACE_DEBUG("!!! tls_ble_server_demo_api_send_msg_notify , rc=%d, err data[%02x%02x]\r\n", rc, g_ind_data[0], g_ind_data[1])
-        g_send_pending = 0;    
+        g_send_pending = 0;
     }
 
     return rc;
@@ -841,30 +842,30 @@ int tls_ble_server_demo_api_set_work_mode(int work_mode)
     int intv_min = 0x06;
     int intv_max = 0x06;
     struct ble_l2cap_sig_update_params params;
-    
+
 #define PIC_TRANSFERING 1
 #define CONNECTING_KEEP 0
 #define CONNECTING_KEEP_AND_LOW_POWER 2
 
     switch(work_mode)
     {
-        case 0: 
+        case 0:
             intv_min = 100;
             intv_max = 120;
             break;
         case 1:
             intv_min = 6;
             intv_max = 6;
-            break;      
+            break;
         case 2:
             intv_min = 200;
-            intv_max = 240; 
+            intv_max = 240;
             break;
         default:
             TLS_BT_APPL_TRACE_DEBUG("Unspported work mode %d\r\n", work_mode);
             return -1;
     }
-    
+
     params.itvl_min = intv_min;
     params.itvl_max = intv_max;
     params.slave_latency = 0;
@@ -874,7 +875,7 @@ int tls_ble_server_demo_api_set_work_mode(int work_mode)
     if(rc != 0)
     {
         TLS_BT_APPL_TRACE_ERROR("ERROR, ble_l2cap_sig_update rc=%d\r\n", rc);
-    } 
+    }
 
     return rc;
 }

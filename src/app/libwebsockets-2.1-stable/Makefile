@@ -21,7 +21,7 @@ EXCLUDES = minihuf.c \
 			lejp-conf.c \
 			libev.c \
 			libuv.c \
-			lws-plat-mbed3.c			
+			lws-plat-mbed3.c
 
 CSRCS = $(filter-out $(EXCLUDES), $(wildcard *.c))
 
