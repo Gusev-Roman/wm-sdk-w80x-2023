@@ -165,7 +165,7 @@ int wm_ble_server_api_demo_adv(bool enable)
  ****************************************************************************************
  */
 
-static uint8_t gatt_svc_test_read_value[] = "Apple Inc.";//{0x01, 0x02, 0x03};
+static char gatt_svc_test_read_value[] = "Apple Inc.";//{0x01, 0x02, 0x03};
 
 static void tls_print_bytes(const char *desc, uint8_t *ptr, uint16_t len)
 {
@@ -210,9 +210,10 @@ gatt_svr_chr_demo_access_func(uint16_t conn_handle, uint16_t attr_handle,
 
             return 0;
         case BLE_GATT_ACCESS_OP_READ_CHR:
+// TODO: check handle (ctxt?) for send different data!
             rc = os_mbuf_append(ctxt->om, &gatt_svc_test_read_value,
                                 sizeof gatt_svc_test_read_value);
-            gatt_svc_test_read_value[0]++;
+            //gatt_svc_test_read_value[0]++;
             return rc == 0 ? 0 : BLE_ATT_ERR_INSUFFICIENT_RES;
 
         default:
