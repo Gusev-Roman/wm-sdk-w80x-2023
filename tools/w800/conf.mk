@@ -106,15 +106,17 @@ LD_FILE = $(LDDIR)/gcc_csky_bt.ld
 endif
 LIB_EXT = .a
 
+#     -DUSE_SELECT=1 \
+
 CCFLAGS := -Wall \
     -DTLS_CONFIG_CPU_XT804=1 \
     -DGCC_COMPILE=1 \
     -DNO_PERSISTENCE=1 \
-    -DUSE_SELECT=1 \
     -DHIGH_PERFORMANCE=1 \
     -DUSE_MBEDTLS=1 \
     -mcpu=ck804ef \
     $(optimization) \
+    $(DEFINES) \
     -std=gnu99 \
     -c  \
     -mhard-float  \

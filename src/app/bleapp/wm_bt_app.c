@@ -362,6 +362,13 @@ static scan_resp_cb_fn *p_scan_resp_cb = NULL;
 
 /**General gap event listener*/
 static struct ble_gap_event_listener ble_scan_event_listener;
+#ifndef TMACSTR
+#define TMACSTR "%02x:%02x:%02x:%02x:%02x:%02x"
+#endif
+
+#ifndef TMAC2STR
+#define TMAC2STR(a) (a).val[5], (a).val[4], (a).val[3], (a).val[2], (a).val[1], (a).val[0]
+#endif
 
 static int
 ble_gap_evt_cb(struct ble_gap_event *event, void *arg)
@@ -371,21 +378,22 @@ ble_gap_evt_cb(struct ble_gap_event *event, void *arg)
     int i = 0;
     char adv_name[64];
 
-    switch(event->type) {
-        case BLE_GAP_EVENT_DISC:
+    switch(event->type) { 
+        case BLE_GAP_EVENT_DISC:        // discovery packet! 
 
-            rc = ble_hs_adv_parse_fields(&fields, event->disc.data,
-                                         event->disc.length_data);
-
+            printf("["TMACSTR"] (%d) ", TMAC2STR(event->disc.addr), event->disc.length_data);
+            // in BLE 4.x advert size is limited to 31 byte
+            rc = ble_hs_adv_parse_fields(&fields, event->disc.data, event->disc.length_data);
             if(rc != 0) {
                 return 0;
             }
-#if 0
+#if 1
 
             /* An advertisment report was received during GAP discovery. */
             print_adv_fields(&fields);
 #endif 
             /**check gap event triggered by at command first*/
+            // callback must be registered first: [void tls_ble_demo_scan_at_cmd_register(scan_resp_cb_fn *cb);]
             if(p_scan_resp_cb)
             {
                 p_scan_resp_cb(WM_BLE_GAP_EVENT_DISC, event->disc.rssi, event->disc.addr.val, fields.name, fields.name_len, event->disc.data,
@@ -401,7 +409,7 @@ ble_gap_evt_cb(struct ble_gap_event *event, void *arg)
                 printf(">>>>>>name[%d]%s, rssi=%d\r\n", fields.name_len, adv_name, event->disc.rssi);
             }
             for(i = 0; i < event->disc.length_data; i++) {
-                printf("%02x", event->disc.data[i]);
+                printf("%02x ", event->disc.data[i]);
             }
             printf("\r\n");
             

@@ -416,10 +416,10 @@ struct ble_gap_disc_desc {
     uint8_t length_data;
 
     /** Advertiser address */
-    ble_addr_t addr;
+    ble_addr_t addr;    // TODO
 
     /** Received signal strength indication in dBm (127 if unavailable) */
-    int8_t rssi;
+    int8_t rssi;        // TODO
 
     /** Advertising data */
     const uint8_t *data;
