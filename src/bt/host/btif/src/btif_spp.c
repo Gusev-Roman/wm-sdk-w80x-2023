@@ -281,8 +281,9 @@ static void btapp_spp_handle_cback(uint16_t event, char *p_param)
             msg.write_msg.congest = p_data->rfc_write.cong;
 
             if(tls_spp_cb) { tls_spp_cb(WM_SPP_WRITE_EVT, &msg); }
-
+            printf("is BAD?\n");
             list_remove(slot->list, list_front(slot->list));
+            printf("is BAD!!!\n");
             break;
 
         case BTA_JV_RFCOMM_SRV_OPEN_EVT:

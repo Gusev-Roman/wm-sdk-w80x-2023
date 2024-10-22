@@ -78,7 +78,7 @@ size_t list_length(const list_t *list)
 void *list_front(const list_t *list)
 {
     assert(list != NULL);
-    assert(!list_is_empty(list));
+    assert(!list_is_empty(list));       // тут падает assert на 2-й посылке байта. 
     return list->head->data;
 }
 

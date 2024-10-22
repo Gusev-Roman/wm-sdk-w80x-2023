@@ -14,7 +14,7 @@
 
 
 #if (TLS_CONFIG_BR_EDR == CFG_ON)
-    #define WM_BTA_AV_SINK_INCLUDED    CFG_ON
+    #define WM_BTA_AV_SINK_INCLUDED    CFG_OFF
     #define WM_BTA_HFP_HSP_INCLUDED    CFG_ON
     #define WM_BTA_SPPS_INCLUDED       CFG_ON
     #define WM_BTA_SPPC_INCLUDED       CFG_OFF

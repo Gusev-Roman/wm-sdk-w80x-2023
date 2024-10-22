@@ -35,7 +35,7 @@
  ****************************************************************************************
  */
 
-static const wm_spp_sec_t spp_sec_mask = WM_SPP_SEC_NONE;
+static const wm_spp_sec_t spp_sec_mask = WM_SPP_SEC_NONE;           // our server is not protected!
 //static const tls_spp_role_t spp_role_slave = WM_SPP_ROLE_SERVER;
 
 static int g_send_freq = 0;
@@ -100,6 +100,9 @@ static void btspp_server_start_callback(uint8_t status, uint32_t handle, uint8_t
 
 static void wm_bt_spp_callback(tls_spp_event_t evt, tls_spp_msg_t *msg)
 {
+    char *bf;
+    tls_bt_status_t stat;
+
     TLS_BT_APPL_TRACE_DEBUG("%s, event=%s(%d)\r\n", __FUNCTION__, tls_spp_evt_2_str(evt), evt);
 
     switch(evt) {
@@ -125,14 +128,26 @@ static void wm_bt_spp_callback(tls_spp_event_t evt, tls_spp_msg_t *msg)
             break;
 
         case WM_SPP_DATA_IND_EVT:
+            bf = malloc(msg->data_ind_msg.length + 1);
+            if(bf){
+                memcpy(bf, msg->data_ind_msg.data, msg->data_ind_msg.length);
+                bf[msg->data_ind_msg.length] = 0;
+                printf("%s", bf);
+                free(bf);
+            }
             btspp_data_indication_callback(msg->data_ind_msg.status, msg->data_ind_msg.handle,
                                            msg->data_ind_msg.data, msg->data_ind_msg.length);
+            stat = tls_bt_spp_write(msg->data_ind_msg.handle, (uint8_t *)"*", 1);
+            //sppc_state = WM_SPPC_TRANSFERING; // в сервере не реализованы стейты
+            printf("%s tls_bt_spp_write() returns %d\n", __FUNCTION__, stat);
+            // хрень вылезает после этой строки ()
             break;
 
         case WM_SPP_CONG_EVT:
             break;
 
         case WM_SPP_WRITE_EVT:
+            printf("write_cb reports status=%d\n", msg->write_msg.status);
             break;
 
         case WM_SPP_SRV_OPEN_EVT:

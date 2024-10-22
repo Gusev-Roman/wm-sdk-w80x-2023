@@ -872,6 +872,7 @@ int demo_ble_scan(uint8_t start)
 
 #if (WM_BT_INCLUDED == CFG_ON)
 
+/** EntryPoint for console cmd t-bt-demo-on */
 int demo_bt_app_on()
 {
     tls_bt_property_t btp;
